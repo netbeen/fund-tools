@@ -6,6 +6,14 @@
  * @return returnObj {price: number, cost: number, return: number, rateOfReturn: number, annualizedRateOfReturn: number}
  */
 export const calcReturn = () => {
+  console.log('123')
+  return {
+    price: 0,
+    cost: 1,
+    return: 111,
+    rateOfReturn: 0.32,
+    annualizedRateOfReturn: 0.11
+  }
 }
 
 export const useless = 1
