@@ -34,7 +34,6 @@ it('Format Month M MM MMM MMMM', () => {
 })
 
 it('Format Day of Month D DD 1 - 31', () => {
-  expect(dayjs().format('D')).toBe(moment().format('D'))
   expect(dayjs().format('DD')).toBe(moment().format('DD'))
 })
 

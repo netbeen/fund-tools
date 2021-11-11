@@ -1,8 +1,9 @@
 /* eslint-disable max-len */
 /**
  * 计算收益：包括 当前净值、当前成本、收益额、收益率、年化收益率
+ * 计算范围：operations 的第一天 ~ marketPrices 的最后一天
  * @param marketPrices Array<{date: Date, price: number}> 按照date升序排列
- * @param operations Array<{date: Date, price: number, volume: number, direction: 'buy'|'sell'}> 按照date升序排列
+ * @param operations Array<{date: Date, price: number, volume: number, direction: 'BUY'|'SELL'}> 按照date升序排列
  * @return returnObj {price: number, cost: number, return: number, rateOfReturn: number, annualizedRateOfReturn: number}
  */
 export const calcReturn = () => {
