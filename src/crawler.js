@@ -14,4 +14,16 @@ export const fetchAccumulatedPriceByIdentifier = async (fundIdentifier) => {
   return formattedResult
 }
 
+export const fetchDividendByIdentifier = async (fundIdentifier) => {
+  const fetchResult = (await axios.get(`http://fund.10jqka.com.cn/${fundIdentifier}/fhcf.js`)).data.split(';')[0].split('=')[1]
+  const formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs(item[0]).toDate(), dividend: item[1] }))
+  return formattedResult
+}
+
+export const fetchSplitByIdentifier = async (fundIdentifier) => {
+  const fetchResult = (await axios.get(`http://fund.10jqka.com.cn/${fundIdentifier}/fhcf.js`)).data.split(';')[1].split('=')[1]
+  const formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs(item[0]).toDate(), splitRatio: item[1] }))
+  return formattedResult
+}
+
 export const useless = 1
