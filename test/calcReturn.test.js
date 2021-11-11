@@ -1,9 +1,4 @@
-import dayjs, { calcReturn } from '../src'
-import timezone from '../src/plugin/timezone'
-import utc from '../src/plugin/utc'
-
-dayjs.extend(utc)
-dayjs.extend(timezone)
+import { calcReturn } from '../src'
 
 const mockMarketPrice = [
   { date: new Date('2021-01-01'), price: 1 },

@@ -2,6 +2,7 @@ import * as C from './constant'
 import en from './locale/en'
 import U from './utils'
 import { calcReturn } from './calcReturn'
+import { fetchUnitPriceByIdentifier } from './crawler'
 
 let L = 'en' // global locale
 const Ls = {} // global loaded locale
@@ -408,4 +409,4 @@ dayjs.en = Ls[L]
 dayjs.Ls = Ls
 dayjs.p = {}
 export default dayjs
-export { calcReturn }
+export { calcReturn, fetchUnitPriceByIdentifier }
