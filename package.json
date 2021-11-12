@@ -1,6 +1,6 @@
 {
   "name": "fund-tools",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "2KB immutable date time library alternative to Moment.js with the same modern API ",
   "main": "dayjs.min.js",
   "types": "index.d.ts",
@@ -13,12 +13,6 @@
   },
   "pre-commit": [
     "lint"
-  ],
-  "size-limit": [
-    {
-      "limit": "2.99 KB",
-      "path": "dayjs.min.js"
-    }
   ],
   "release": {
     "prepare": [
@@ -42,12 +36,11 @@
     "immutable",
     "moment"
   ],
-  "author": "iamkun",
+  "author": "netbeen",
   "license": "MIT",
-  "homepage": "https://day.js.org",
   "repository": {
     "type": "git",
-    "url": "https://github.com/iamkun/dayjs.git"
+    "url": "https://github.com/netbeen/fund-tools"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.44",
