@@ -1,5 +1,11 @@
 import * as C from './constant'
 
+export const sortByDate = inputArray => inputArray.sort((a, b) => (b.valueOf() - a.valueOf()))
+
+export const sliceBetween = (inputArray, startDate, endDate) => inputArray.filter(item => (
+  item.date.valueOf() > startDate.valueOf() && item.date.valueOf() < endDate.valueOf()
+))
+
 const padStart = (string, length, pad) => {
   const s = String(string)
   if (!s || s.length >= length) return string
