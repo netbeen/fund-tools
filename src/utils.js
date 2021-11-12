@@ -32,6 +32,25 @@ export const getMockOperationsOn519671Two = () => ([{
   date: dayjs('2019-09-30'), volume: 1500, direction: OPERATION_DIRECTION_SELL, commission: 10
 }])
 
+// on 512010 until 2021-11-12
+export const getMockOperationsOn512010 = () => ([
+  {
+    date: dayjs('2021-06-01'), volume: 1000, direction: OPERATION_DIRECTION_BUY, commission: 10
+  },
+  {
+    date: dayjs('2021-06-18'), volume: 500, direction: OPERATION_DIRECTION_BUY, commission: 10
+  },
+  {
+    date: dayjs('2021-06-28'), volume: 1000, direction: OPERATION_DIRECTION_BUY, commission: 10
+  },
+  {
+    date: dayjs('2021-06-29'), volume: 1500, direction: OPERATION_DIRECTION_SELL, commission: 10
+  },
+  {
+    date: dayjs('2021-06-30'), volume: 1500, direction: OPERATION_DIRECTION_BUY, commission: 10
+  }
+])
+
 export const findByDateFromArray = (inputArray, targetDate) => (inputArray.find(item => item.date.isSame(targetDate)))
 
 export const weightedSum = (inputArray) => {

@@ -1,5 +1,5 @@
 import { fetchDividendByIdentifier, fetchSplitByIdentifier, calcReturn, fetchUnitPriceByIdentifier } from '../src'
-import { getMockOperationsOn519671One, getMockOperationsOn519671Two } from '../src/utils'
+import { getMockOperationsOn512010, getMockOperationsOn519671One, getMockOperationsOn519671Two } from '../src/utils'
 
 test('Real data test on 519671 until 2021-11-11', async () => {
   // 本用例涵盖行为：买入
@@ -43,6 +43,31 @@ test('Real data test on 519671 until 2019-09-30', async () => {
   expect(result.exitReturn).toBe(-72.49999999999989)
   expect(result.totalReturn).toBe(-72.49999999999989)
   expect(result.positionRateOfReturn).toBeNaN()
+})
+
+test('Real data test on 512010 until 2021-11-11', async () => {
+  // 本用例涵盖行为：买入、卖出、拆分
+  const [unitResult, dividendsResult, splitResult] = await Promise.all([
+    fetchUnitPriceByIdentifier('512010'),
+    fetchDividendByIdentifier('512010'),
+    fetchSplitByIdentifier('512010')
+  ])
+  const result = calcReturn(
+    unitResult,
+    dividendsResult,
+    splitResult,
+    getMockOperationsOn512010(),
+  )
+  expect(result.unitPrice).toBe(0.642)
+  expect(result.unitCost).toBe(0.8303831632653061)
+  expect(result.volume).toBe(7000)
+  expect(result.totalCommission).toBe(50)
+  expect(result.positionReturn).toBe(-1318.682142857143)
+  expect(result.positionCost).toBe(5812.682142857143)
+  expect(result.positionValue).toBe(4494)
+  expect(result.positionRateOfReturn).toBe(-0.22686293701395532)
+  expect(result.exitReturn).toBe(-8.167857142857107)
+  expect(result.totalReturn).toBe(-1326.8500000000001)
 })
 
 test('Test for invalid params', () => {
