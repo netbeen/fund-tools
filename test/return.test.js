@@ -44,3 +44,18 @@ test('Real data test on 519671 until 2019-09-30', async () => {
   expect(result.totalReturn).toBe(-72.49999999999989)
   expect(result.positionRateOfReturn).toBeNaN()
 })
+
+test('Test for invalid params', () => {
+  expect(() => {
+    calcReturn(null, [], [], [])
+  }).toThrow()
+  expect(() => {
+    calcReturn([], null, [], [])
+  }).toThrow()
+  expect(() => {
+    calcReturn([], [], null, [])
+  }).toThrow()
+  expect(() => {
+    calcReturn([], [], [], null)
+  }).toThrow()
+})

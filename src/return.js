@@ -11,7 +11,7 @@ import { OPERATION_DIRECTION_BUY } from './constant'
  * @return returnObj {price: number, cost: number, return: number, rateOfReturn: number, annualizedRateOfReturn: number}
  */
 export const calcReturn = (unitPrices, dividends, splits, operations) => {
-  if (!Array.isArray(unitPrices) || !Array.isArray(operations)) {
+  if (!Array.isArray(unitPrices) || !Array.isArray(operations) || !Array.isArray(dividends) || !Array.isArray(splits)) {
     throw new Error('Params Error')
   }
   const validUnitPrices = sliceBetween(unitPrices, operations[0].date, dayjs())
