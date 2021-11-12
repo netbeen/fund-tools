@@ -26,27 +26,23 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
   ])).sort((a, b) => (a - b)).map(item => dayjs(item))
 
   // 持仓储量统计值
-  let currentVolume = operations[0].volume
+  let currentVolume = 0
   // 单位成本统计值: 单位成本 = 单位净值 + 单位手续费
-  let currentUnitCost = findByDateFromArray(validUnitPrices, operations[0].date).price + (operations[0].commission / operations[0].volume)
+  let currentUnitCost = 0
   // 总显性手续费统计值
   let currentCommission = 0
   // 总离场利润统计值
   let currentExitReturn = 0
-  operationOrDividendOrSplitDate.forEach((eventDate, index) => {
-    if (index === 0) {
-      return
-    }
+  operationOrDividendOrSplitDate.forEach((eventDate) => {
     // 拆分: 增加持仓数量，减少单位成本
     const splitEvent = findByDateFromArray(validSplits, eventDate)
     if (splitEvent) {
       currentVolume *= splitEvent.splitRatio
       currentUnitCost /= splitEvent.splitRatio
     }
-    // 分红: 减少单位成本、增加离场利润
+    // 分红: 增加离场利润
     const dividendEvent = findByDateFromArray(validDividends, eventDate)
     if (dividendEvent) {
-      currentUnitCost -= dividendEvent.dividend
       currentExitReturn += dividendEvent.dividend * currentVolume
     }
     // 买卖: 增加总手续费
@@ -59,7 +55,7 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
         const thisEventUnitCost = unitPriceThatDay + (operationEvent.commission / operationEvent.volume)
         currentUnitCost = weightedSum([{ value: currentUnitCost, weight: currentVolume }, { value: thisEventUnitCost, weight: operationEvent.volume }])
       } else {
-        const thisEventReturn = (unitPriceThatDay - currentUnitCost) * currentVolume // todo: 没算手续费
+        const thisEventReturn = ((unitPriceThatDay - currentUnitCost) * operationEvent.volume) - operationEvent.commission
         currentExitReturn += thisEventReturn
       }
       currentCommission += operationEvent.commission
@@ -67,12 +63,13 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
     }
   })
 
+  const latestUnitPrice = currentVolume === 0 ? findByDateFromArray(validUnitPrices, lastOfArray(operations).date).price : lastOfArray(validUnitPrices).price
   // 持仓盈利
-  const positionReturn = (lastOfArray(validUnitPrices).price - currentUnitCost) * currentVolume
+  const positionReturn = (latestUnitPrice - currentUnitCost) * currentVolume
   // 持仓成本
   const positionCost = currentUnitCost * currentVolume
   return {
-    unitPrice: lastOfArray(validUnitPrices).price,
+    unitPrice: latestUnitPrice,
     unitCost: currentUnitCost,
     volume: currentVolume,
     totalCommission: currentCommission,

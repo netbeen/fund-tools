@@ -7,6 +7,7 @@ export const fetchUnitPriceByIdentifier = async (fundIdentifier) => {
   const fetchResult = (await axios.get(`http://fund.10jqka.com.cn/${fundIdentifier}/json/jsondwjz.json`)).data.split('=')[1]
   let formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs(item[0]), price: Number(item[1]) }))
   formattedResult = sortByDate(formattedResult)
+  // formattedResult.push({ date: dayjs('2021-11-12'), price: 1.589 })
   return formattedResult
 }
 
