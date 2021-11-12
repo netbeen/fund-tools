@@ -1,7 +1,7 @@
 import * as C from './constant'
 import en from './locale/en'
 import U from './utils'
-import { calcReturn } from './calcReturn'
+import { calcReturn } from './return'
 import { fetchUnitPriceByIdentifier } from './crawler'
 
 let L = 'en' // global locale
