@@ -1,16 +1,13 @@
-import { fetchUnitPriceByIdentifier } from '../src'
-import { fetchAccumulatedPriceByIdentifier, fetchDividendByIdentifier, fetchSplitByIdentifier } from '../src/crawler'
+import { fetchUnitPriceByIdentifier, fetchAccumulatedPriceByIdentifier, fetchDividendByIdentifier, fetchSplitByIdentifier } from '../src'
 
-it('calcReturn Test', async () => {
-  const unitResult = await fetchUnitPriceByIdentifier('519671')
-  console.log('unitResult', unitResult.length)
-
-  const accumulatedResult = await fetchAccumulatedPriceByIdentifier('519671')
-  console.log('accumulatedResult', accumulatedResult.length)
-
-  const dividendsResult = await fetchDividendByIdentifier('519671')
-  console.log('dividendsResult', dividendsResult.length)
-
-  const splitResult = await fetchSplitByIdentifier('512010')
-  console.log('splitResult', splitResult.length)
+test('Fetch some example data', async () => {
+  const [unitResult, accumulatedResult, dividendsResult, splitResult] = await Promise.all([
+    fetchUnitPriceByIdentifier('519671'),
+    fetchAccumulatedPriceByIdentifier('519671'),
+    fetchDividendByIdentifier('519671'),
+    fetchSplitByIdentifier('512010')])
+  expect(unitResult.length).toBeGreaterThan(0)
+  expect(accumulatedResult.length).toBeGreaterThan(0)
+  expect(dividendsResult.length).toBeGreaterThan(0)
+  expect(splitResult.length).toBeGreaterThan(0)
 })

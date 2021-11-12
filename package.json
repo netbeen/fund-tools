@@ -6,14 +6,10 @@
   "types": "index.d.ts",
   "scripts": {
     "test": "jest",
-    "test-tz": "date && jest test/timezone.test --coverage=false",
     "lint": "./node_modules/.bin/eslint src/* test/* build/*",
     "prettier": "prettier --write \"docs/**/*.md\"",
     "babel": "cross-env BABEL_ENV=build babel src --out-dir esm --copy-files && node build/esm",
-    "build": "cross-env BABEL_ENV=build node build && npm run size",
-    "sauce": "npx karma start karma.sauce.conf.js",
-    "test:sauce": "npm run sauce -- 0 && npm run sauce -- 1 && npm run sauce -- 2  && npm run sauce -- 3",
-    "size": "size-limit && gzip-size dayjs.min.js"
+    "build": "cross-env BABEL_ENV=build node build"
   },
   "pre-commit": [
     "lint"
@@ -24,18 +20,6 @@
       "path": "dayjs.min.js"
     }
   ],
-  "jest": {
-    "roots": [
-      "test"
-    ],
-    "testRegex": "test/(.*?/)?.*test.js$",
-    "testEnvironment": "node",
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*"
-    ]
-  },
   "release": {
     "prepare": [
       {
