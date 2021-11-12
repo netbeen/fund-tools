@@ -3,8 +3,10 @@ import * as C from './constant'
 export const sortByDate = inputArray => inputArray.sort((a, b) => (b.valueOf() - a.valueOf()))
 
 export const sliceBetween = (inputArray, startDate, endDate) => inputArray.filter(item => (
-  item.date.valueOf() > startDate.valueOf() && item.date.valueOf() < endDate.valueOf()
+  item.date.valueOf() >= startDate.valueOf() && item.date.valueOf() <= endDate.valueOf()
 ))
+
+export const lastOfArray = inputArray => (inputArray[inputArray.length - 1])
 
 const padStart = (string, length, pad) => {
   const s = String(string)

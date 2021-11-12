@@ -1,6 +1,8 @@
 export const OPERATION_DIRECTION_BUY = 'BUY'
 export const OPERATION_DIRECTION_SELL = 'SELL'
 
+export const HISTORY_START_DATE = new Date('1990-01-01')
+
 export const SECONDS_A_MINUTE = 60
 export const SECONDS_A_HOUR = SECONDS_A_MINUTE * 60
 export const SECONDS_A_DAY = SECONDS_A_HOUR * 24
