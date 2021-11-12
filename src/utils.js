@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import * as C from './constant'
 
 export const sortByDate = inputArray => inputArray.sort((a, b) => (b.valueOf() - a.valueOf()))
@@ -7,6 +8,8 @@ export const sliceBetween = (inputArray, startDate, endDate) => inputArray.filte
 ))
 
 export const lastOfArray = inputArray => (inputArray[inputArray.length - 1])
+
+export const findByDateFromArray = (inputArray, targetDate) => (inputArray.find(item => item.date.valueOf() === targetDate.valueOf()))
 
 const padStart = (string, length, pad) => {
   const s = String(string)
