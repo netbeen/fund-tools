@@ -2,6 +2,8 @@
 import dayjs from 'dayjs'
 import { OPERATION_DIRECTION_BUY, OPERATION_DIRECTION_SELL } from './constant'
 
+export const internalDayjs = dayjs
+
 export const sortByDate = inputArray => inputArray.sort((a, b) => (b.valueOf() - a.valueOf()))
 
 export const sliceBetween = (inputArray, startDate, endDate) => inputArray.filter(item => (

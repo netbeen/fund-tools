@@ -1,5 +1,11 @@
 import { fetchDividendByIdentifier, fetchSplitByIdentifier, calcReturn, fetchUnitPriceByIdentifier } from '../src'
-import { getMockOperationsOn512010, getMockOperationsOn519671One, getMockOperationsOn519671Two } from '../src/utils'
+import {
+  getMockOperationsOn512010,
+  getMockOperationsOn519671One,
+  getMockOperationsOn519671Two, internalDayjs,
+  sliceBetween
+} from '../src/utils'
+import { HISTORY_START_DATE } from '../src/constant'
 
 test('Real data test on 519671 until 2021-11-11', async () => {
   // 本用例涵盖行为：买入
@@ -9,7 +15,7 @@ test('Real data test on 519671 until 2021-11-11', async () => {
     fetchSplitByIdentifier('519671')
   ])
   const result = calcReturn(
-    unitResult,
+    sliceBetween(unitResult, HISTORY_START_DATE, internalDayjs('2021-11-11')),
     dividendsResult,
     splitResult,
     getMockOperationsOn519671One(),
@@ -53,21 +59,21 @@ test('Real data test on 512010 until 2021-11-11', async () => {
     fetchSplitByIdentifier('512010')
   ])
   const result = calcReturn(
-    unitResult,
+    sliceBetween(unitResult, HISTORY_START_DATE, internalDayjs('2021-11-12')),
     dividendsResult,
     splitResult,
     getMockOperationsOn512010(),
   )
-  expect(result.unitPrice).toBe(0.642)
+  expect(result.unitPrice).toBe(0.6416)
   expect(result.unitCost).toBe(0.8303831632653061)
   expect(result.volume).toBe(7000)
   expect(result.totalCommission).toBe(50)
-  expect(result.positionReturn).toBe(-1318.682142857143)
+  expect(result.positionReturn).toBe(-1321.4821428571433)
   expect(result.positionCost).toBe(5812.682142857143)
-  expect(result.positionValue).toBe(4494)
-  expect(result.positionRateOfReturn).toBe(-0.22686293701395532)
+  expect(result.positionValue).toBe(4491.2)
+  expect(result.positionRateOfReturn).toBe(-0.2273446423491492)
   expect(result.exitReturn).toBe(-8.167857142857107)
-  expect(result.totalReturn).toBe(-1326.8500000000001)
+  expect(result.totalReturn).toBe(-1329.6500000000005)
 })
 
 test('Test for invalid params', () => {
