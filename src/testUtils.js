@@ -42,3 +42,18 @@ export const getMockOperationsOn512010 = () => ([
     date: dayjs('2021-06-30'), volume: 1500, direction: OPERATION_DIRECTION_BUY, commission: 10
   }
 ])
+
+// on 202002 until 2021-11-12
+export const getMockOperationsOn202002 = () => ([
+  {
+    date: dayjs('2007-04-02'), volume: 1000, direction: OPERATION_DIRECTION_BUY, commission: 10
+  }, {
+    date: dayjs('2007-04-03'), volume: 500, direction: OPERATION_DIRECTION_SELL, commission: 10
+  }, {
+    date: dayjs('2007-04-04'), volume: 1000, direction: OPERATION_DIRECTION_BUY, commission: 10
+  }, {
+    date: dayjs('2021-11-10'), volume: 1000, direction: OPERATION_DIRECTION_SELL, commission: 10
+  }, {
+    date: dayjs('2021-11-11'), volume: 1500, direction: OPERATION_DIRECTION_BUY, commission: 10
+  }
+])
