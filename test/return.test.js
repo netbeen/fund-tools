@@ -7,11 +7,13 @@ import {
   getMockOperationsOn202002,
   getMockOperationsOn512010,
   getMockOperationsOn519671One,
-  getMockOperationsOn519671Two
+  getMockOperationsOn519671Two,
+  getMockOperationsOnAnnualizedRateOfReturnOne,
+  getMockUnitPriceOnAnnualizedRateOfReturnOne
 } from '../src/testUtils'
 import { HISTORY_START_DATE } from '../src/constant'
 
-test('Real data test on 519671 until 2021-11-11 测试 买入', async () => {
+test('Real data on 519671 until 2021-11-11 测试 买入', async () => {
   const [unitResult, dividendsResult, splitResult] = await Promise.all([
     fetchUnitPriceByIdentifier('519671'),
     fetchDividendByIdentifier('519671'),
@@ -23,7 +25,6 @@ test('Real data test on 519671 until 2021-11-11 测试 买入', async () => {
     splitResult,
     getMockOperationsOn519671One(),
   )
-  console.log('result', result)
   expect(result.unitPrice).toBe(1.597)
   expect(result.unitCost).toBe(1.6110785712273878)
   expect(result.positionValue).toBe(21546.05326)
@@ -32,7 +33,7 @@ test('Real data test on 519671 until 2021-11-11 测试 买入', async () => {
   expect(result.positionRateOfReturn).toBe(-0.008738600015430793)
 })
 
-test('Real data test on 519671 until 2019-09-30 测试 买入/卖出/分红', async () => {
+test('Real data on 519671 until 2019-09-30 测试 买入/卖出/分红', async () => {
   const [unitResult, dividendsResult, splitResult] = await Promise.all([
     fetchUnitPriceByIdentifier('519671'),
     fetchDividendByIdentifier('519671'),
@@ -44,7 +45,6 @@ test('Real data test on 519671 until 2019-09-30 测试 买入/卖出/分红', as
     splitResult,
     getMockOperationsOn519671Two(),
   )
-  console.log('result', result)
   expect(result.unitPrice).toBe(1.417)
   expect(result.volume).toBe(0)
   expect(result.totalCommission).toBe(40)
@@ -55,7 +55,7 @@ test('Real data test on 519671 until 2019-09-30 测试 买入/卖出/分红', as
   expect(result.positionRateOfReturn).toBeNaN()
 })
 
-test('Real data test on 512010 until 2021-11-12 测试 买入/卖出/拆分', async () => {
+test('Real data on 512010 until 2021-11-12 测试 买入/卖出/拆分', async () => {
   const [unitResult, dividendsResult, splitResult] = await Promise.all([
     fetchUnitPriceByIdentifier('512010'),
     fetchDividendByIdentifier('512010'),
@@ -79,7 +79,7 @@ test('Real data test on 512010 until 2021-11-12 测试 买入/卖出/拆分', as
   expect(result.totalReturn).toBe(-1329.6500000000005)
 })
 
-test('Real data test on 202002 until 2021-11-12 测试 买入/卖出/分红/拆分', async () => {
+test('Real data on 202002 until 2021-11-12 测试 买入/卖出/分红/拆分', async () => {
   const [unitResult, dividendsResult, splitResult] = await Promise.all([
     fetchUnitPriceByIdentifier('202002'),
     fetchDividendByIdentifier('202002'),
@@ -91,7 +91,6 @@ test('Real data test on 202002 until 2021-11-12 测试 买入/卖出/分红/拆�
     splitResult,
     getMockOperationsOn202002(),
   )
-  console.log('result', result)
   expect(result.unitPrice).toBe(0.615)
   expect(result.unitCost).toBe(0.7904529095375764)
   expect(result.volume).toBe(3687.9500000000003)
@@ -102,6 +101,26 @@ test('Real data test on 202002 until 2021-11-12 测试 买入/卖出/分红/拆�
   expect(result.positionRateOfReturn).toBe(-0.22196503728503988)
   expect(result.exitReturn).toBe(2497.441502729105)
   expect(result.totalReturn).toBe(1850.3799450000001)
+})
+
+test('Mock Data 测试 买入/年化收益率', async () => {
+  const result = calcReturn(
+    getMockUnitPriceOnAnnualizedRateOfReturnOne(),
+    [],
+    [],
+    getMockOperationsOnAnnualizedRateOfReturnOne()
+  )
+  expect(result.unitPrice).toBe(1.1)
+  expect(result.unitCost).toBe(1.026)
+  expect(result.volume).toBe(0)
+  expect(result.totalCommission).toBe(3)
+  expect(result.positionReturn).toBe(0)
+  expect(result.positionCost).toBe(0)
+  expect(result.positionValue).toBe(0)
+  expect(result.positionRateOfReturn).toBeNaN()
+  expect(result.exitReturn).toBe(147.00000000000014)
+  expect(result.totalReturn).toBe(147.00000000000014)
+  expect(result.totalAnnualizedRateOfReturn).toBe(0.057483578798732005)
 })
 
 test('Test for invalid params', () => {
