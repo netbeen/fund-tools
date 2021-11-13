@@ -23,6 +23,7 @@ test('Real data test on 519671 until 2021-11-11 测试 买入', async () => {
     splitResult,
     getMockOperationsOn519671One(),
   )
+  console.log('result', result)
   expect(result.unitPrice).toBe(1.597)
   expect(result.unitCost).toBe(1.6110785712273878)
   expect(result.positionValue).toBe(21546.05326)

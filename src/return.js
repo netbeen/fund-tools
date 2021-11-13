@@ -29,10 +29,12 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
   let currentVolume = 0
   // 单位成本统计值: 单位成本 = 单位净值 + 单位手续费
   let currentUnitCost = 0
-  // 总显性手续费统计值
+  // 总显性手续费统计值：显性手续费仅在买入卖出时扣除，每日的基金管理费、托管费属于隐性手续费，不在此统计范围
   let currentCommission = 0
   // 总离场利润统计值
   let currentExitReturn = 0
+  // 两个概念定义：Transaction = 特定的一笔交易；TransactionSet = 针对同一个投资标的，在一个投资周期内（从开仓到清仓）的所有交易的集合
+  let lastDayOfTransactionSet = null
   operationOrDividendOrSplitDate.forEach((eventDate) => {
     // 拆分: 增加持仓数量，减少单位成本
     const splitEvent = findByDateFromArray(validSplits, eventDate)
@@ -60,16 +62,23 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
       }
       currentCommission += operationEvent.commission
       currentVolume += (operationEvent.direction === OPERATION_DIRECTION_BUY ? operationEvent.volume : -operationEvent.volume)
+
+      if (currentVolume === 0) {
+        lastDayOfTransactionSet = eventDate
+      }
     }
   })
 
-  const latestUnitPrice = currentVolume === 0 ? findByDateFromArray(validUnitPrices, lastOfArray(operations).date).price : lastOfArray(validUnitPrices).price
   // 持仓盈利
-  const positionReturn = (latestUnitPrice - currentUnitCost) * currentVolume
+  const positionReturn = lastDayOfTransactionSet
+    ? 0
+    : (lastOfArray(validUnitPrices).price - currentUnitCost) * currentVolume
   // 持仓成本
   const positionCost = currentUnitCost * currentVolume
   return {
-    unitPrice: latestUnitPrice,
+    unitPrice: lastDayOfTransactionSet
+      ? findByDateFromArray(validUnitPrices, lastDayOfTransactionSet).price
+      : lastOfArray(validUnitPrices).price,
     unitCost: currentUnitCost,
     volume: currentVolume,
     totalCommission: currentCommission,
