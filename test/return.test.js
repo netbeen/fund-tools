@@ -1,10 +1,13 @@
 import { fetchDividendByIdentifier, fetchSplitByIdentifier, calcReturn, fetchUnitPriceByIdentifier } from '../src'
 import {
-  getMockOperationsOn512010,
-  getMockOperationsOn519671One,
-  getMockOperationsOn519671Two, internalDayjs,
+  internalDayjs,
   sliceBetween
 } from '../src/utils'
+import {
+  getMockOperationsOn512010,
+  getMockOperationsOn519671One,
+  getMockOperationsOn519671Two
+} from '../src/testUtils'
 import { HISTORY_START_DATE } from '../src/constant'
 
 test('Real data test on 519671 until 2021-11-11', async () => {
