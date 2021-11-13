@@ -1,12 +1,67 @@
 /* eslint-disable max-len */
 import dayjs from 'dayjs'
-import { findByDateFromArray, lastOfArray, sliceBetween, weightedSum } from './utils'
+import {
+  findByDateFromArray,
+  findClosestSmallerItemByDateFromArray,
+  lastOfArray,
+  sliceBetween,
+  weightedSum
+} from './utils'
 import { OPERATION_DIRECTION_BUY } from './constant'
+
+/**
+ * 计算当前 TransactionSet 的年化收益率
+ */
+const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn) => {
+  const startDate = operations[0].date
+  // console.log(startDate.format(), endDate.format(), unitPrices.length, operations.length, totalReturn)
+
+  const dateDiff = endDate.diff(startDate, 'day')
+  const volumeLog = []
+
+  // 「将手续费和市值按天离散后，取积分」的统计值
+  let integrationOfCommission = 0
+  let integrationOfPositionValue = 0
+  operations.forEach((operation) => {
+    integrationOfCommission += endDate.diff(operation.date, 'day') * operation.commission
+    if (volumeLog.length === 0) {
+      volumeLog.push({ date: operation.date, volume: operation.volume })
+    } else {
+      volumeLog.push({
+        date: operation.date,
+        volume: lastOfArray(volumeLog).volume + (operation.direction === OPERATION_DIRECTION_BUY
+          ? operation.volume
+          : -operation.volume
+        )
+      })
+    }
+  })
+  // console.log('volumeLog', volumeLog.map(item => [item.date.format(), item.volume]))
+  for (let i = 0; i < dateDiff; i += 1) {
+    const dateIndex = startDate.add(i, 'day')
+    const positionValue =
+        findClosestSmallerItemByDateFromArray(unitPrices, dateIndex).price *
+        findClosestSmallerItemByDateFromArray(volumeLog, dateIndex).volume
+    // console.log(
+    //   dateIndex.format(),
+    //   'positionValue=', positionValue,
+    //   'integrationOfPositionValue=', integrationOfPositionValue,
+    //   findClosestSmallerItemByDateFromArray(unitPrices, dateIndex).price,
+    //   findClosestSmallerItemByDateFromArray(volumeLog, dateIndex).volume
+    // )
+    integrationOfPositionValue += positionValue
+  }
+
+  // console.log(integrationOfCommission, integrationOfPositionValue)
+  return (totalReturn / (integrationOfCommission + integrationOfPositionValue)) * 365
+}
 
 /**
  * 计算收益：包括 当前净值、当前成本、收益额、收益率、年化收益率
  * 计算范围：operations 的第一天 ~ unitPrices 的最后一天
  * @param unitPrices Array<{date: Date, price: number}> 单位净值按照date升序排列
+ * @param dividends Array<{date: Date, dividend: number}> 分红事件按照date升序排列
+ * @param splits Array<{date: Date, splitRatio: number}> 拆分事件按照date升序排列
  * @param operations Array<{date: Date, volume: number, commission: number, direction: 'BUY'|'SELL'}> 按照date升序排列
  * @return returnObj {price: number, cost: number, return: number, rateOfReturn: number, annualizedRateOfReturn: number}
  */
@@ -33,8 +88,12 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
   let currentCommission = 0
   // 总离场利润统计值
   let currentExitReturn = 0
+  // 总分红利润统计值
+  let currentDividend = 0
   // 两个概念定义：Transaction = 特定的一笔交易；TransactionSet = 针对同一个投资标的，在一个投资周期内（从开仓到清仓）的所有交易的集合
+  // lastDayOfTransactionSet 非 null 即表示本 TransactionSet 是已经终结的历史数据
   let lastDayOfTransactionSet = null
+
   operationOrDividendOrSplitDate.forEach((eventDate) => {
     // 拆分: 增加持仓数量，减少单位成本
     const splitEvent = findByDateFromArray(validSplits, eventDate)
@@ -46,6 +105,7 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
     const dividendEvent = findByDateFromArray(validDividends, eventDate)
     if (dividendEvent) {
       currentExitReturn += dividendEvent.dividend * currentVolume
+      currentDividend += dividendEvent.dividend * currentVolume
     }
     // 买卖: 增加总手续费
     // 买: 增加持仓数量，改变单位成本
@@ -75,6 +135,16 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
     : (lastOfArray(validUnitPrices).price - currentUnitCost) * currentVolume
   // 持仓成本
   const positionCost = currentUnitCost * currentVolume
+  // 总盈利
+  const totalReturn = positionReturn + currentExitReturn
+
+  const totalAnnualizedRateOfReturn = calcAnnualizedRateOfReturn(
+    lastDayOfTransactionSet || dayjs(),
+    unitPrices,
+    operations,
+    totalReturn
+  )
+
   return {
     unitPrice: lastDayOfTransactionSet
       ? findByDateFromArray(validUnitPrices, lastDayOfTransactionSet).price
@@ -82,13 +152,14 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
     unitCost: currentUnitCost,
     volume: currentVolume,
     totalCommission: currentCommission,
+    totalDividend: currentDividend,
     positionReturn,
     positionCost,
     positionValue: currentVolume * lastOfArray(validUnitPrices).price,
     positionRateOfReturn: positionReturn / positionCost,
     exitReturn: currentExitReturn,
-    totalReturn: positionReturn + currentExitReturn,
-    totalAnnualizedRateOfReturn: 0.0000001
+    totalReturn,
+    totalAnnualizedRateOfReturn
   }
 }
 

@@ -44,6 +44,7 @@ test('Real data test on 519671 until 2019-09-30 测试 买入/卖出/分红', as
     splitResult,
     getMockOperationsOn519671Two(),
   )
+  console.log('result', result)
   expect(result.unitPrice).toBe(1.417)
   expect(result.volume).toBe(0)
   expect(result.totalCommission).toBe(40)
@@ -90,6 +91,7 @@ test('Real data test on 202002 until 2021-11-12 测试 买入/卖出/分红/拆�
     splitResult,
     getMockOperationsOn202002(),
   )
+  console.log('result', result)
   expect(result.unitPrice).toBe(0.615)
   expect(result.unitCost).toBe(0.7904529095375764)
   expect(result.volume).toBe(3687.9500000000003)
