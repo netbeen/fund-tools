@@ -1,3 +1,4 @@
+// const resolve = require('rollup-plugin-node-resolve')
 const babel = require('rollup-plugin-babel')
 const { terser } = require('rollup-plugin-terser')
 
@@ -6,7 +7,7 @@ module.exports = (config) => {
   return {
     input: {
       input,
-      external: [],
+      external: ['dayjs', 'axios'],
       plugins: [
         babel({
           exclude: 'node_modules/**'
@@ -19,7 +20,8 @@ module.exports = (config) => {
       format: 'umd',
       name: name || 'dayjs',
       globals: {
-        dayjs: 'dayjs'
+        dayjs: 'dayjs',
+        axios: 'axios'
       },
       compact: true
     }
