@@ -6,9 +6,7 @@ module.exports = (config) => {
   return {
     input: {
       input,
-      external: [
-        'dayjs'
-      ],
+      external: [],
       plugins: [
         babel({
           exclude: 'node_modules/**'
