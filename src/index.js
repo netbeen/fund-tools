@@ -1,6 +1,12 @@
 import '@babel/polyfill'
 import { calcReturn } from './return'
-import { fetchUnitPriceByIdentifier, fetchSplitByIdentifier, fetchAccumulatedPriceByIdentifier, fetchDividendByIdentifier } from './crawler'
+import {
+  fetchBasicInfoByIdentifier,
+  fetchUnitPriceByIdentifier,
+  fetchSplitByIdentifier,
+  fetchAccumulatedPriceByIdentifier,
+  fetchDividendByIdentifier
+} from './crawler'
 import { OPERATION_DIRECTION_BUY, OPERATION_DIRECTION_SELL } from './constant'
 
 export {
@@ -9,6 +15,7 @@ export {
   fetchSplitByIdentifier,
   fetchAccumulatedPriceByIdentifier,
   fetchDividendByIdentifier,
+  fetchBasicInfoByIdentifier,
   OPERATION_DIRECTION_BUY,
   OPERATION_DIRECTION_SELL
 }
