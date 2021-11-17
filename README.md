@@ -23,7 +23,7 @@
 ```console
 npm install fund-tools --save
 # OR
-yarna add fund-tools
+yarn add fund-tools
 ```
 
 ### API Example
