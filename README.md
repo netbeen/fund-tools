@@ -20,7 +20,7 @@
 
 ### Installation
 
-```console
+```shell
 npm install fund-tools --save
 # OR
 yarn add fund-tools
