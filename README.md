@@ -26,7 +26,7 @@ npm install fund-tools --save
 yarn add fund-tools
 ```
 
-### API Example
+### Example
 
 ```javascript
 import {
@@ -77,3 +77,103 @@ console.log(calcResult);
   }
  */
 ```
+
+### API Reference 
+
+#### fetchBasicInfoByIdentifier
+
+拉取特定基金的基本信息
+
+```javascript
+function fetchBasicInfoByIdentifier(
+    identifier: string  // 六位数字格式的基金代码
+): Promise<{
+    identifier: string, // 基金代码回显
+    name: string,       // 基金名称
+    type: string        // 基金类型: 股票型、债券型、商品型、货币型、混合型
+}>;
+```
+
+#### fetchUnitPriceByIdentifier
+
+拉取特定基金的全部交易日的单位净值数据
+
+```javascript
+function fetchUnitPriceByIdentifier(
+    identifier: string  // 六位数字格式的基金代码
+): Promise<Array<{
+    date: dayjs.Dayjs,  // 交易日时间戳
+    price: number       // 单位净值 单位:人民币
+}>>;
+```
+
+#### fetchAccumulatedPriceByIdentifier
+
+拉取特定基金的全部交易日的累计净值数据
+
+```javascript
+function fetchAccumulatedPriceByIdentifier(
+    identifier: string  // 六位数字格式的基金代码
+): Promise<Array<{
+    date: dayjs.Dayjs,  // 交易日时间戳
+    price: number       // 累计净值 单位:人民币
+}>>;
+```
+
+#### fetchSplitByIdentifier
+
+拉取特定基金的全部交易日的基金拆分数据
+
+```javascript
+function fetchAccumulatedPriceByIdentifier(
+    identifier: string  // 六位数字格式的基金代码
+): Promise<Array<{
+    date: dayjs.Dayjs,  // 交易日时间戳
+    splitRatio: number  // 拆分比例，如果是 1 拆 2.4，那么这个值就是 2.4
+}>>;
+```
+
+#### fetchSplitByIdentifier
+
+拉取特定基金的全部交易日的基金分红数据
+
+```javascript
+function fetchDividendByIdentifier(
+    identifier: string  // 六位数字格式的基金代码
+): Promise<Array<{
+    date: dayjs.Dayjs,  // 交易日时间戳
+    dividend: number    // 每份基金分红，如果是每份分红 0.024 元，那么这个值就是 0.024 单位:人民币
+}>>;
+```
+
+#### calcReturn
+
+计算投资回报率
+
+```javascript
+function calcReturn(
+    unitPrices: Array<{date: dayjs.Dayjs, price: number}>,      // 同单位净值的接口返回格式
+    dividends: Array<{date: dayjs.Dayjs, dividend: number}>,    // 同基金分红的接口返回格式
+    splits: Array<{date: dayjs.Dayjs, splitRatio: number}>,     // 同基金拆分的接口返回格式
+    operations: Array<{             // 交易记录
+        date: Date,                 // 交易日时间戳
+        volume: number,             // 成交量
+        commission: number,         // 手续费/佣金
+        direction: 'BUY'|'SELL'     // 方向：买入/卖出
+    }>
+): Promise<{
+    unitPrice: number,              // 单位净值
+    unitCost: number,               // 单位成本
+    volume: number,                 // 持仓数量
+    totalCommission: number,        // 总显性手续费（仅计算申购费和赎回费，不计算银行托管费、基金管理费）
+    totalDividend: number,          // 总分红
+    positionReturn: number,         // 持仓收益
+    positionCost: number,           // 持仓成本
+    positionValue: number,          // 总市值
+    positionRateOfReturn: number,   // 持仓收益率
+    exitReturn: number,             // 已落袋收益
+    totalReturn: number,            // 总收益
+    totalAnnualizedRateOfReturn: number     // 年化收益率
+}>;
+```
+
