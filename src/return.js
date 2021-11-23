@@ -44,7 +44,6 @@ const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn
     integrationOfPositionValue += positionValue
   }
 
-  // console.log(integrationOfCommission, integrationOfPositionValue)
   return (totalReturn / (integrationOfCommission + integrationOfPositionValue)) * 365
 }
 
@@ -107,7 +106,11 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
     // 卖: 减少持仓数量，改变离场盈利
     const operationEvent = findByDateFromArray(operations, eventDate)
     if (operationEvent) {
-      const unitPriceThatDay = findByDateFromArray(validUnitPrices, eventDate).price
+      const unitPriceObj = findByDateFromArray(validUnitPrices, eventDate)
+      if (!unitPriceObj) {
+        throw new Error(`Try to find unitPrice on ${eventDate.format()}, but get ${unitPriceObj}`)
+      }
+      const unitPriceThatDay = unitPriceObj.price
       if (operationEvent.direction === OPERATION_DIRECTION_BUY) {
         const thisEventUnitCost = unitPriceThatDay + (operationEvent.commission / operationEvent.volume)
         currentUnitCost = weightedSum([{ value: currentUnitCost, weight: currentVolume }, { value: thisEventUnitCost, weight: operationEvent.volume }])
@@ -124,10 +127,14 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
     }
   })
 
+  const lastValidUnitPriceObj = lastOfArray(validUnitPrices)
+  if (!lastValidUnitPriceObj) {
+    throw new Error(`Try to get last unitPrice failed, got ${lastValidUnitPriceObj}`)
+  }
   // 持仓盈利
   const positionReturn = lastDayOfTransactionSet
     ? 0
-    : (lastOfArray(validUnitPrices).price - currentUnitCost) * currentVolume
+    : (lastValidUnitPriceObj.price - currentUnitCost) * currentVolume
   // 持仓成本
   const positionCost = currentUnitCost * currentVolume
   // 总盈利
@@ -143,14 +150,14 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
   return {
     unitPrice: lastDayOfTransactionSet
       ? findByDateFromArray(validUnitPrices, lastDayOfTransactionSet).price
-      : lastOfArray(validUnitPrices).price,
+      : lastValidUnitPriceObj.price,
     unitCost: currentUnitCost,
     volume: currentVolume,
     totalCommission: currentCommission,
     totalDividend: currentDividend,
     positionReturn,
     positionCost,
-    positionValue: currentVolume * lastOfArray(validUnitPrices).price,
+    positionValue: currentVolume * lastValidUnitPriceObj.price,
     positionRateOfReturn: positionReturn / positionCost,
     exitReturn: currentExitReturn,
     totalReturn,
