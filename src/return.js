@@ -69,6 +69,9 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
   if (!Array.isArray(unitPrices) || !Array.isArray(operations) || !Array.isArray(dividends) || !Array.isArray(splits)) {
     throw new Error('Params Error')
   }
+  if (operations.length === 0) {
+    throw new Error('Param operations received []')
+  }
   const validUnitPrices = sliceBetween(unitPrices, operations[0].date, dayjs())
   const validDividends = sliceBetween(dividends, operations[0].date, dayjs())
   const validSplits = sliceBetween(splits, operations[0].date, dayjs())

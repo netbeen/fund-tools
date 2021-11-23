@@ -9,7 +9,7 @@ export function calcReturn(
         commission: number,         // 手续费/佣金
         direction: 'BUY'|'SELL'     // 方向：买入/卖出
     }>
-): Promise<{
+): {
     unitPrice: number,              // 单位净值
     unitCost: number,               // 单位成本
     volume: number,                 // 持仓数量
@@ -22,7 +22,7 @@ export function calcReturn(
     exitReturn: number,             // 已落袋收益
     totalReturn: number,            // 总收益
     totalAnnualizedRateOfReturn: number     // 年化收益率
-}>;
+};
 export function fetchUnitPriceByIdentifier(identifier: string): Promise<Array<{date: dayjs.Dayjs, price: number}>>;
 export function fetchAccumulatedPriceByIdentifier(identifier: string): Promise<Array<{date: dayjs.Dayjs, price: number}>>;
 export function fetchSplitByIdentifier(identifier: string): Promise<Array<{date: dayjs.Dayjs, splitRatio: number}>>;
