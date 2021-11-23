@@ -36,19 +36,11 @@ const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn
       })
     }
   })
-  // console.log('volumeLog', volumeLog.map(item => [item.date.format(), item.volume]))
   for (let i = 0; i < dateDiff; i += 1) {
     const dateIndex = startDate.add(i, 'day')
     const positionValue =
         findClosestSmallerItemByDateFromArray(unitPrices, dateIndex).price *
         findClosestSmallerItemByDateFromArray(volumeLog, dateIndex).volume
-    // console.log(
-    //   dateIndex.format(),
-    //   'positionValue=', positionValue,
-    //   'integrationOfPositionValue=', integrationOfPositionValue,
-    //   findClosestSmallerItemByDateFromArray(unitPrices, dateIndex).price,
-    //   findClosestSmallerItemByDateFromArray(volumeLog, dateIndex).volume
-    // )
     integrationOfPositionValue += positionValue
   }
 
