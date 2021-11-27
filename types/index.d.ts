@@ -4,7 +4,7 @@ export function calcReturn(
     dividends: Array<{date: dayjs.Dayjs, dividend: number}>,    // 同基金分红的接口返回格式
     splits: Array<{date: dayjs.Dayjs, splitRatio: number}>,     // 同基金拆分的接口返回格式
     operations: Array<{             // 交易记录
-        date: Date,                 // 交易日时间戳
+        date: dayjs.Dayjs,          // 交易日时间戳
         volume: number,             // 成交量
         commission: number,         // 手续费/佣金
         direction: 'BUY'|'SELL'     // 方向：买入/卖出
