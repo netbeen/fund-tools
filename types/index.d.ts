@@ -30,3 +30,4 @@ export function fetchDividendByIdentifier(identifier: string): Promise<Array<{da
 export function fetchBasicInfoByIdentifier(identifier: string): Promise<{identifier: string, name: string, type: string}>;
 // @ts-ignore
 export function sliceBetween(inputArray: any[], startDate: dayjs.Dayjs, endDate: dayjs.Dayjs): any[];
+export function lastOfArray(inputArray: any[]): any;
