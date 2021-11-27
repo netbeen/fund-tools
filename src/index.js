@@ -8,6 +8,7 @@ import {
   fetchDividendByIdentifier
 } from './crawler'
 import { OPERATION_DIRECTION_BUY, OPERATION_DIRECTION_SELL } from './constant'
+import { sliceBetween } from './utils'
 
 export {
   calcReturn,
@@ -16,6 +17,7 @@ export {
   fetchAccumulatedPriceByIdentifier,
   fetchDividendByIdentifier,
   fetchBasicInfoByIdentifier,
+  sliceBetween,
   OPERATION_DIRECTION_BUY,
   OPERATION_DIRECTION_SELL
 }

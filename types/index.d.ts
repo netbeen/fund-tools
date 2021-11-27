@@ -28,3 +28,5 @@ export function fetchAccumulatedPriceByIdentifier(identifier: string): Promise<A
 export function fetchSplitByIdentifier(identifier: string): Promise<Array<{date: dayjs.Dayjs, splitRatio: number}>>;
 export function fetchDividendByIdentifier(identifier: string): Promise<Array<{date: dayjs.Dayjs, dividend: number}>>;
 export function fetchBasicInfoByIdentifier(identifier: string): Promise<{identifier: string, name: string, type: string}>;
+// @ts-ignore
+export function sliceBetween(inputArray: any[], startDate: dayjs.Dayjs, endDate: dayjs.Dayjs): any[];
