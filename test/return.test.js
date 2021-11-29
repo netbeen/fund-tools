@@ -136,4 +136,21 @@ test('Test for invalid params', () => {
   expect(() => {
     calcReturn([], [], [], null)
   }).toThrow('Params Error')
+  expect(() => {
+    calcReturn([], [], [], [])
+  }).toThrow('Param operations received []')
 })
+
+// test('Test for invalid data', () => {
+//   const result = calcReturn(
+//     getMockUnitPriceOnAnnualizedRateOfReturnOne(),
+//     [],
+//     [],
+//     getMockOperationsOnAnnualizedRateOfReturnOne()
+//   )
+//   console.log('result', result)
+//   console.log('resultEnd')
+//   expect(() => {
+//     calcReturn(null, [], [], [])
+//   }).toThrow('Params Error')
+// })

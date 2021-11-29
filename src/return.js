@@ -14,19 +14,21 @@ import { OPERATION_DIRECTION_BUY } from './constant'
  */
 const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn) => {
   const startDate = operations[0].date
-  // console.log(startDate.format(), endDate.format(), unitPrices.length, operations.length, totalReturn)
-
   const dateDiff = endDate.diff(startDate, 'day')
   const volumeLog = []
+  console.log('dateDiff', dateDiff, 'startDate', startDate.format())
 
   // 「将手续费和市值按天离散后，取积分」的统计值
   let integrationOfCommission = 0
   let integrationOfPositionValue = 0
+
+  // 遍历交易记录获取手续费的和 & 更新持有量列表
   operations.forEach((operation) => {
     integrationOfCommission += endDate.diff(operation.date, 'day') * operation.commission
     if (volumeLog.length === 0) {
       volumeLog.push({ date: operation.date, volume: operation.volume })
     } else {
+      // todo: 此处有一个bug, 只考虑到了买卖情况，没考虑到拆分情况，拆分也会影响基金份额
       volumeLog.push({
         date: operation.date,
         volume: lastOfArray(volumeLog).volume + (operation.direction === OPERATION_DIRECTION_BUY
@@ -44,6 +46,11 @@ const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn
     integrationOfPositionValue += positionValue
   }
 
+  if (integrationOfCommission + integrationOfPositionValue === 0) {
+    return 0
+  }
+  console.log('totalReturn, (integrationOfCommission + integrationOfPositionValue))', totalReturn, (integrationOfCommission + integrationOfPositionValue))
+  console.log('integrationOfCommission', integrationOfCommission, 'integrationOfPositionValue', integrationOfPositionValue)
   return (totalReturn / (integrationOfCommission + integrationOfPositionValue)) * 365
 }
 
@@ -141,7 +148,7 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
   const totalReturn = positionReturn + currentExitReturn
 
   const totalAnnualizedRateOfReturn = calcAnnualizedRateOfReturn(
-    lastDayOfTransactionSet || dayjs(),
+    lastDayOfTransactionSet || lastOfArray(validUnitPrices).date,
     unitPrices,
     operations,
     totalReturn

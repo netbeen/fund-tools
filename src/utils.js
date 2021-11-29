@@ -13,9 +13,10 @@ export const lastOfArray = inputArray => (inputArray[inputArray.length - 1])
 
 export const findByDateFromArray = (inputArray, targetDate) => (inputArray.find(item => item.date.isSame(targetDate)))
 
-export const findClosestSmallerItemByDateFromArray = (inputArray, targetDate) => (
-  inputArray.reverse().find(item => item.date <= targetDate)
-)
+export const
+  findClosestSmallerItemByDateFromArray = (inputArray, targetDate) => (
+    inputArray.reverse().find(item => item.date <= targetDate)
+  )
 
 export const weightedSum = (inputArray) => {
   let numerator = 0
