@@ -16,7 +16,6 @@ const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn
   const startDate = operations[0].date
   const dateDiff = endDate.diff(startDate, 'day')
   const volumeLog = []
-  console.log('dateDiff', dateDiff, 'startDate', startDate.format())
 
   // 「将手续费和市值按天离散后，取积分」的统计值
   let integrationOfCommission = 0
@@ -49,8 +48,7 @@ const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn
   if (integrationOfCommission + integrationOfPositionValue === 0) {
     return 0
   }
-  console.log('totalReturn, (integrationOfCommission + integrationOfPositionValue))', totalReturn, (integrationOfCommission + integrationOfPositionValue))
-  console.log('integrationOfCommission', integrationOfCommission, 'integrationOfPositionValue', integrationOfPositionValue)
+  // console.log('integrationOfCommission', integrationOfCommission)
   return (totalReturn / (integrationOfCommission + integrationOfPositionValue)) * 365
 }
 
@@ -151,7 +149,7 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
     lastDayOfTransactionSet || lastOfArray(validUnitPrices).date,
     unitPrices,
     operations,
-    totalReturn
+    totalReturn,
   )
 
   return {
