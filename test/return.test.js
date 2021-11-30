@@ -7,9 +7,7 @@ import {
   getMockOperationsOn202002,
   getMockOperationsOn512010,
   getMockOperationsOn519671One,
-  getMockOperationsOn519671Two,
-  getMockOperationsOnAnnualizedRateOfReturnOne,
-  getMockUnitPriceOnAnnualizedRateOfReturnOne
+  getMockOperationsOn519671Two
 } from '../src/testUtils'
 import { HISTORY_START_DATE } from '../src/constant'
 
@@ -102,55 +100,3 @@ test('Real data on 202002 until 2021-11-12 测试 买入/卖出/分红/拆分', 
   expect(result.exitReturn).toBe(2497.441502729105)
   expect(result.totalReturn).toBe(1850.3799450000001)
 })
-
-test('Mock Data 测试 买入/年化收益率', async () => {
-  const result = calcReturn(
-    getMockUnitPriceOnAnnualizedRateOfReturnOne(),
-    [],
-    [],
-    getMockOperationsOnAnnualizedRateOfReturnOne()
-  )
-  expect(result.unitPrice).toBe(1.1)
-  expect(result.unitCost).toBe(1.026)
-  expect(result.volume).toBe(0)
-  expect(result.totalCommission).toBe(3)
-  expect(result.positionReturn).toBe(0)
-  expect(result.positionCost).toBe(0)
-  expect(result.positionValue).toBe(0)
-  expect(result.positionRateOfReturn).toBeNaN()
-  expect(result.exitReturn).toBe(147.00000000000014)
-  expect(result.totalReturn).toBe(147.00000000000014)
-  expect(result.totalAnnualizedRateOfReturn).toBe(0.057483578798732005)
-})
-
-test('Test for invalid params', () => {
-  expect(() => {
-    calcReturn(null, [], [], [])
-  }).toThrow('Params Error')
-  expect(() => {
-    calcReturn([], null, [], [])
-  }).toThrow('Params Error')
-  expect(() => {
-    calcReturn([], [], null, [])
-  }).toThrow('Params Error')
-  expect(() => {
-    calcReturn([], [], [], null)
-  }).toThrow('Params Error')
-  expect(() => {
-    calcReturn([], [], [], [])
-  }).toThrow('Param operations received []')
-})
-
-// test('Test for invalid data', () => {
-//   const result = calcReturn(
-//     getMockUnitPriceOnAnnualizedRateOfReturnOne(),
-//     [],
-//     [],
-//     getMockOperationsOnAnnualizedRateOfReturnOne()
-//   )
-//   console.log('result', result)
-//   console.log('resultEnd')
-//   expect(() => {
-//     calcReturn(null, [], [], [])
-//   }).toThrow('Params Error')
-// })
