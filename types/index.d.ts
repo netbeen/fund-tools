@@ -21,6 +21,8 @@ export function calcReturn(
     positionRateOfReturn: number,   // 持仓收益率
     exitReturn: number,             // 已落袋收益
     totalReturn: number,            // 总收益
+    totalCost: number,              // 总买入成本
+    totalRateOfReturn: number,      // 总收益率
     totalAnnualizedRateOfReturn: number     // 年化收益率
 };
 export function fetchUnitPriceByIdentifier(identifier: string): Promise<Array<{date: dayjs.Dayjs, price: number}>>;

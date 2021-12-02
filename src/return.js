@@ -89,6 +89,8 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
   let currentExitReturn = 0
   // 总分红利润统计值
   let currentDividend = 0
+  // 总买入金额统计值
+  let currentCost = 0
   // 两个概念定义：Transaction = 特定的一笔交易；TransactionSet = 针对同一个投资标的，在一个投资周期内（从开仓到清仓）的所有交易的集合
   // lastDayOfTransactionSet 非 null 即表示本 TransactionSet 是已经终结的历史数据
   let lastDayOfTransactionSet = null
@@ -119,6 +121,7 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
       if (operationEvent.direction === OPERATION_DIRECTION_BUY) {
         const thisEventUnitCost = unitPriceThatDay + (operationEvent.commission / operationEvent.volume)
         currentUnitCost = weightedSum([{ value: currentUnitCost, weight: currentVolume }, { value: thisEventUnitCost, weight: operationEvent.volume }])
+        currentCost += (unitPriceThatDay * operationEvent.volume) + operationEvent.commission
       } else {
         const thisEventReturn = ((unitPriceThatDay - currentUnitCost) * operationEvent.volume) - operationEvent.commission
         currentExitReturn += thisEventReturn
@@ -166,6 +169,8 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
     positionRateOfReturn: positionReturn / positionCost,
     exitReturn: currentExitReturn,
     totalReturn,
+    totalCost: currentCost,
+    totalRateOfReturn: totalReturn / currentCost,
     totalAnnualizedRateOfReturn
   }
 }
