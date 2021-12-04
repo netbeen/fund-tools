@@ -18,6 +18,10 @@
 
 ## Getting Started
 
+### Package
+
+NPM: [https://www.npmjs.com/package/fund-tools](https://www.npmjs.com/package/fund-tools)
+
 ### Installation
 
 ```shell
