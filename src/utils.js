@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 
 export const internalDayjs = dayjs
 
-export const sortByDate = inputArray => inputArray.sort((a, b) => (b.valueOf() - a.valueOf()))
+export const sortByDate = inputArray => inputArray.sort((a, b) => (a.date.valueOf() - b.date.valueOf()))
 
 export const sliceBetween = (inputArray, startDate, endDate) => inputArray.filter(item => (
   item.date >= startDate && item.date <= endDate
