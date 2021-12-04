@@ -17,9 +17,8 @@ const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn
   const dateDiff = endDate.diff(startDate, 'day')
   const volumeLog = []
 
-  // 「将手续费和市值按天离散后，取积分」的统计值
+  // 「将手续费按天离散后，取积分」的统计值
   let integrationOfCommission = 0
-  let integrationOfPositionValue = 0
 
   // 遍历交易记录获取手续费的和 & 更新持有量列表
   operations.forEach((operation) => {
@@ -37,6 +36,9 @@ const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn
       })
     }
   })
+
+  // 「将市值按天离散后，取积分」的统计值
+  let integrationOfPositionValue = 0
   for (let i = 0; i < dateDiff; i += 1) {
     const dateIndex = startDate.add(i, 'day')
     const positionValue =
