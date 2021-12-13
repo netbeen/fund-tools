@@ -13,25 +13,27 @@ dayjs.tz.setDefault('Asia/Shanghai')
 
 export const fetchUnitPriceByIdentifier = async (fundIdentifier) => {
   const url = `http://fund.10jqka.com.cn/${fundIdentifier}/json/jsondwjz.json`
-  const fetchResult = (await axios.get(url)).data.split('=')[1]
+  const fetchData = (await axios.get(url)).data
+  const fetchResult = fetchData.split('=')[1]
   try {
     let formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), price: Number(item[1]) }))
     formattedResult = sortByDate(formattedResult)
     return formattedResult
   } catch (e) {
-    throw new Error(`e=${e}, url=${url}, fetchResult=${fetchResult}`)
+    throw new Error(`e=${e}, url=${url}, fetchData=${fetchData}`)
   }
 }
 
 export const fetchAccumulatedPriceByIdentifier = async (fundIdentifier) => {
   const url = `http://fund.10jqka.com.cn/${fundIdentifier}/json/jsonljjz.json`
-  const fetchResult = (await axios.get(url)).data.split('=')[1]
+  const fetchData = (await axios.get(url)).data
+  const fetchResult = fetchData.split('=')[1]
   try {
     let formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), price: Number(item[1]) }))
     formattedResult = sortByDate(formattedResult)
     return formattedResult
   } catch (e) {
-    throw new Error(`e=${e}, url=${url}, fetchResult=${fetchResult}`)
+    throw new Error(`e=${e}, url=${url}, fetchData=${fetchData}`)
   }
 }
 
