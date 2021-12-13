@@ -1,6 +1,6 @@
 {
   "name": "fund-tools",
-  "version": "0.0.44",
+  "version": "0.0.45",
   "description": "2KB immutable date time library alternative to Moment.js with the same modern API ",
   "main": "dayjs.min.js",
   "types": "index.d.ts",

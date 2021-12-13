@@ -50,7 +50,6 @@ const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn
   if (integrationOfCommission + integrationOfPositionValue === 0) {
     return 0
   }
-  // console.log('integrationOfCommission', integrationOfCommission)
   return (totalReturn / (integrationOfCommission + integrationOfPositionValue)) * 365
 }
 

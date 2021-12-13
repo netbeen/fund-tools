@@ -12,17 +12,27 @@ dayjs.extend(timezone)
 dayjs.tz.setDefault('Asia/Shanghai')
 
 export const fetchUnitPriceByIdentifier = async (fundIdentifier) => {
-  const fetchResult = (await axios.get(`http://fund.10jqka.com.cn/${fundIdentifier}/json/jsondwjz.json`)).data.split('=')[1]
-  let formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), price: Number(item[1]) }))
-  formattedResult = sortByDate(formattedResult)
-  return formattedResult
+  const url = `http://fund.10jqka.com.cn/${fundIdentifier}/json/jsondwjz.json`
+  const fetchResult = (await axios.get(url)).data.split('=')[1]
+  try {
+    let formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), price: Number(item[1]) }))
+    formattedResult = sortByDate(formattedResult)
+    return formattedResult
+  } catch (e) {
+    throw new Error(`e=${e}, url=${url}, fetchResult=${fetchResult}`)
+  }
 }
 
 export const fetchAccumulatedPriceByIdentifier = async (fundIdentifier) => {
-  const fetchResult = (await axios.get(`http://fund.10jqka.com.cn/${fundIdentifier}/json/jsonljjz.json`)).data.split('=')[1]
-  let formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), price: Number(item[1]) }))
-  formattedResult = sortByDate(formattedResult)
-  return formattedResult
+  const url = `http://fund.10jqka.com.cn/${fundIdentifier}/json/jsonljjz.json`
+  const fetchResult = (await axios.get(url)).data.split('=')[1]
+  try {
+    let formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), price: Number(item[1]) }))
+    formattedResult = sortByDate(formattedResult)
+    return formattedResult
+  } catch (e) {
+    throw new Error(`e=${e}, url=${url}, fetchResult=${fetchResult}`)
+  }
 }
 
 export const fetchDividendByIdentifier = async (fundIdentifier) => {
