@@ -23,6 +23,7 @@ test('Mock Data 测试 买入/年化收益率', async () => {
   expect(result.totalReturn).toBe(147.00000000000014)
   expect(result.totalCost).toBe(2052)
   expect(result.totalRateOfReturn).toBe(0.07163742690058486)
+  // expect(result.totalAnnualizedRateOfReturn).toBe(0)
   expect(result.totalAnnualizedRateOfReturn).toBe(0.057483578798732005)
 })
 

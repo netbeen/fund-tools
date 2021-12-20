@@ -50,6 +50,7 @@ const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn
   if (integrationOfCommission + integrationOfPositionValue === 0) {
     return 0
   }
+  // 当前年化收益率公式 = 总收益 / 总市值积分 * 365
   return (totalReturn / (integrationOfCommission + integrationOfPositionValue)) * 365
 }
 
@@ -70,8 +71,8 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
     throw new Error('Param operations received []')
   }
   const validUnitPrices = sliceBetween(unitPrices, operations[0].date, dayjs())
-  const validDividends = sliceBetween(dividends, operations[0].date, dayjs())
-  const validSplits = sliceBetween(splits, operations[0].date, dayjs())
+  const validDividends = sliceBetween(dividends, operations[0].date, lastOfArray(validUnitPrices).date)
+  const validSplits = sliceBetween(splits, operations[0].date, lastOfArray(validUnitPrices).date)
 
   // 统计出所有 买卖、分红、拆分 会影响成本和持仓数量的时间点，并按照递增排序
   const operationOrDividendOrSplitDate = Array.from(new Set([
