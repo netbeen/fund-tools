@@ -17,6 +17,7 @@ coverage
 /locale
 /plugin
 /dayjs.min.js
+/index.min.js
 /esm
 /index.d.ts
 locale.json

@@ -15,7 +15,7 @@ async function build(option) {
   try {
     build(configFactory({
       input: './src/index.js',
-      fileName: './dayjs.min.js'
+      fileName: './index.min.js'
     }))
     await promisify(ncp)('./types/', './')
   } catch (e) {

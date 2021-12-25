@@ -1,7 +1,7 @@
 ## Fund Tools
 
 <div>
-    <a href="https://unpkg.com/fund-tools/dayjs.min.js"><img src="https://img.badgesize.io/https:/unpkg.com/fund-tools/dayjs.min.js?style=flat-square&compression=gzip" alt="Gzip Size"></a>
+    <a href="https://unpkg.com/fund-tools/index.min.js"><img src="https://img.badgesize.io/https:/unpkg.com/fund-tools/index.min.js?style=flat-square&compression=gzip" alt="Gzip Size"></a>
     <a href="https://www.npmjs.com/package/fund-tools"><img src="https://img.shields.io/npm/v/fund-tools.svg?style=flat-square&colorB=51C838" alt="NPM Version"></a>
     <a href="https://travis-ci.com/iamkun/dayjs"><img src="https://img.shields.io/travis/iamkun/dayjs/master.svg?style=flat-square" alt="Build Status"></a>
     <a href="https://codecov.io/gh/netbeen/fund-tools"><img
