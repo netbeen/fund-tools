@@ -5,20 +5,22 @@ import {
   findByDateFromArray,
   lastOfArray,
   sliceBetween,
-  weightedSum
+  weightedSum,
+  findClosestSmallerItemByDateFromArray
 } from './utils'
 import { OPERATION_DIRECTION_BUY } from './constant'
 
 /**
  * 计算当前 TransactionSet 的年化收益率
  */
-const calcAnnualizedRateOfReturn = (lastDayOfTransactionSet, unitPrices, operations) => {
+const calcAnnualizedRateOfReturn = (lastDayOfTransactionSet, currentVolume, unitPrices, operations) => {
   const startDate = operations[0].date
   const duration = (lastDayOfTransactionSet || dayjs()).diff(startDate, 'day')
   const irrData = []
   for (let i = 0; i < (duration + 1); i += 1) {
     const currentDate = startDate.add(i, 'day')
     const targetOperation = operations.find(operation => operation.date.isSame(currentDate))
+
     if (targetOperation) {
       const currentUnitPriceObject = findByDateFromArray(unitPrices, currentDate)
       if (!currentUnitPriceObject) {
@@ -29,7 +31,12 @@ const calcAnnualizedRateOfReturn = (lastDayOfTransactionSet, unitPrices, operati
       } else {
         irrData.push((targetOperation.volume * currentUnitPriceObject.price) - targetOperation.commission)
       }
+    } else if (i === duration && !lastDayOfTransactionSet) {
+      // 未找到交易记录的两个case: 1. 当日无交易，推0 2. 未卖出交易的最后一天，模拟卖出计算收益
+      const currentUnitPriceObject = findClosestSmallerItemByDateFromArray(unitPrices, currentDate)
+      irrData.push(currentVolume * currentUnitPriceObject.price)
     } else {
+      // 未找到交易记录的两个case: 1. 当日无交易，推0 2. 未卖出交易的最后一天，模拟卖出计算收益
       irrData.push(0)
     }
   }
@@ -136,6 +143,7 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
 
   const totalAnnualizedRateOfReturn = calcAnnualizedRateOfReturn(
     lastDayOfTransactionSet,
+    currentVolume,
     validUnitPrices,
     operations,
   )
