@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 import dayjs from 'dayjs'
+import { irr } from 'financial'
 import {
   findByDateFromArray,
-  findClosestSmallerItemByDateFromArray,
   lastOfArray,
   sliceBetween,
   weightedSum
@@ -12,46 +12,30 @@ import { OPERATION_DIRECTION_BUY } from './constant'
 /**
  * 计算当前 TransactionSet 的年化收益率
  */
-const calcAnnualizedRateOfReturn = (endDate, unitPrices, operations, totalReturn) => {
+const calcAnnualizedRateOfReturn = (lastDayOfTransactionSet, unitPrices, operations) => {
   const startDate = operations[0].date
-  const dateDiff = endDate.diff(startDate, 'day')
-  const volumeLog = []
-
-  // 「将手续费按天离散后，取积分」的统计值
-  let integrationOfCommission = 0
-
-  // 遍历交易记录获取手续费的和 & 更新持有量列表
-  operations.forEach((operation) => {
-    integrationOfCommission += endDate.diff(operation.date, 'day') * operation.commission
-    if (volumeLog.length === 0) {
-      volumeLog.push({ date: operation.date, volume: operation.volume })
+  const duration = (lastDayOfTransactionSet || dayjs()).diff(startDate, 'day')
+  const irrData = []
+  for (let i = 0; i < (duration + 1); i += 1) {
+    const currentDate = startDate.add(i, 'day')
+    const targetOperation = operations.find(operation => operation.date.isSame(currentDate))
+    if (targetOperation) {
+      const currentUnitPriceObject = findByDateFromArray(unitPrices, currentDate)
+      if (!currentUnitPriceObject) {
+        throw new Error('!currentUnitPriceObject')
+      }
+      if (targetOperation.direction === OPERATION_DIRECTION_BUY) {
+        irrData.push(-(targetOperation.volume * currentUnitPriceObject.price) - targetOperation.commission)
+      } else {
+        irrData.push((targetOperation.volume * currentUnitPriceObject.price) - targetOperation.commission)
+      }
     } else {
-      // todo: 此处有一个bug, 只考虑到了买卖情况，没考虑到拆分情况，拆分也会影响基金份额
-      volumeLog.push({
-        date: operation.date,
-        volume: lastOfArray(volumeLog).volume + (operation.direction === OPERATION_DIRECTION_BUY
-          ? operation.volume
-          : -operation.volume
-        )
-      })
+      irrData.push(0)
     }
-  })
-
-  // 「将市值按天离散后，取积分」的统计值
-  let integrationOfPositionValue = 0
-  for (let i = 0; i < dateDiff; i += 1) {
-    const dateIndex = startDate.add(i, 'day')
-    const positionValue =
-        findClosestSmallerItemByDateFromArray(unitPrices, dateIndex).price *
-        findClosestSmallerItemByDateFromArray(volumeLog, dateIndex).volume
-    integrationOfPositionValue += positionValue
   }
 
-  if (integrationOfCommission + integrationOfPositionValue === 0) {
-    return 0
-  }
   // 当前年化收益率公式 = 总收益 / 总市值积分 * 365
-  return (totalReturn / (integrationOfCommission + integrationOfPositionValue)) * 365
+  return irr(irrData, 0, 0.00001, 1000) * 365
 }
 
 /**
@@ -151,10 +135,9 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
   const totalReturn = positionReturn + currentExitReturn
 
   const totalAnnualizedRateOfReturn = calcAnnualizedRateOfReturn(
-    lastDayOfTransactionSet || lastOfArray(validUnitPrices).date,
-    unitPrices,
+    lastDayOfTransactionSet,
+    validUnitPrices,
     operations,
-    totalReturn,
   )
 
   return {

@@ -80,6 +80,7 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/runtime": "^7.16.3",
     "axios": "^0.24.0",
-    "dayjs": "^1.10.7"
+    "dayjs": "^1.10.7",
+    "financial": "^0.1.3"
   }
 }

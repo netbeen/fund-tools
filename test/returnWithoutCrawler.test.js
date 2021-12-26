@@ -24,7 +24,8 @@ test('Mock Data 测试 买入/年化收益率', async () => {
   expect(result.totalCost).toBe(2052)
   expect(result.totalRateOfReturn).toBe(0.07163742690058486)
   // expect(result.totalAnnualizedRateOfReturn).toBe(0)
-  expect(result.totalAnnualizedRateOfReturn).toBe(0.057483578798732005)
+  // expect(result.totalAnnualizedRateOfReturn).toBe(0.057483578798732005)
+  expect(result.totalAnnualizedRateOfReturn).toBe(0.046234386144782175)
 })
 
 test('Test for invalid params', () => {
