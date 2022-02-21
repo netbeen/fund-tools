@@ -17,6 +17,6 @@ test('Fetch basic info', async () => {
     fetchBasicInfoByIdentifier('160119'),
     fetchBasicInfoByIdentifier('160119invalid')
   ])
-  expect(validResult).toEqual({ identifier: '160119', name: '南方500', type: '股票型' })
+  expect(validResult).toEqual({ identifier: '160119', name: '南方中证500ETF联接(LOF)A', type: '股票型' })
   expect(invalidResult).toBeNull()
 })
