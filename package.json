@@ -1,6 +1,6 @@
 {
   "name": "fund-tools",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "2KB immutable date time library alternative to Moment.js with the same modern API ",
   "main": "index.min.js",
   "types": "index.d.ts",
@@ -43,8 +43,8 @@
     "url": "https://github.com/netbeen/fund-tools"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.3",
-    "@babel/core": "^7.17.5",
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.8",
     "@babel/node": "^7.16.8",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
@@ -64,11 +64,11 @@
     "karma-sauce-launcher": "^1.1.0",
     "mockdate": "^2.0.2",
     "moment": "^2.29.1",
-    "moment-timezone": "0.5.31",
+    "moment-timezone": "^0.5.34",
     "ncp": "^2.0.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.16.1",
-    "rollup": "^2.67.3",
+    "rollup": "^2.70.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
@@ -78,9 +78,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
-    "@babel/runtime": "^7.17.2",
-    "axios": "^0.24.0",
-    "dayjs": "^1.10.7",
+    "@babel/runtime": "^7.17.8",
+    "axios": "^0.26.1",
+    "dayjs": "^1.11.0",
     "financial": "^0.1.3"
   }
 }
