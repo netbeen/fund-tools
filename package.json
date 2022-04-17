@@ -1,6 +1,6 @@
 {
   "name": "fund-tools",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An NPM lib supports the Chinese fund's data fetching, rate of return calculation, and especially annualized rate of return calculation, which is available to Node.js runtime and browsers.",
   "main": "index.min.js",
   "types": "index.d.ts",
@@ -34,7 +34,7 @@
     "fund",
     "profit",
     "wealth",
-    "manager",
+    "manager"
   ],
   "author": "netbeen",
   "license": "MIT",
@@ -56,12 +56,10 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^21.15.0",
-    "jasmine-core": "^2.99.1",
     "jest": "^22.4.3",
     "karma": "^2.0.2",
     "karma-jasmine": "^1.1.2",
     "karma-sauce-launcher": "^1.1.0",
-    "mockdate": "^2.0.2",
     "ncp": "^2.0.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.16.1",
@@ -69,8 +67,7 @@
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "typescript": "^2.8.3"
+    "rollup-plugin-terser": "^7.0.2"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
