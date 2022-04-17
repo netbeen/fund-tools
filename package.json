@@ -1,7 +1,7 @@
 {
   "name": "fund-tools",
   "version": "1.0.2",
-  "description": "2KB immutable date time library alternative to Moment.js with the same modern API ",
+  "description": "An NPM lib supports the Chinese fund's data fetching, rate of return calculation, and especially annualized rate of return calculation, which is available to Node.js runtime and browsers.",
   "main": "index.min.js",
   "types": "index.d.ts",
   "scripts": {
@@ -9,7 +9,8 @@
     "lint": "./node_modules/.bin/eslint src/* test/* build/*",
     "prettier": "prettier --write \"docs/**/*.md\"",
     "babel": "cross-env BABEL_ENV=build babel src --out-dir esm --copy-files && node build/esm",
-    "build": "cross-env BABEL_ENV=build node build"
+    "build": "cross-env BABEL_ENV=build node build",
+    "allInOne": "npm run test && npm run babel && npm run build && npm publish"
   },
   "pre-commit": [
     "lint"
@@ -80,7 +81,7 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/runtime": "^7.17.9",
     "axios": "^0.26.1",
-    "dayjs": "^1.11.0",
+    "dayjs": "^1.11.1",
     "financial": "^0.1.3"
   }
 }
