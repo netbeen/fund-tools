@@ -11,8 +11,10 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.tz.setDefault('Asia/Shanghai')
 
+const fundDataApiHost = 'http://fund-data.netbeen.top'
+
 export const fetchUnitPriceByIdentifier = async (fundIdentifier) => {
-  const url = `https://fund.10jqka.com.cn/${fundIdentifier}/json/jsondwjz.json`
+  const url = `${fundDataApiHost}/${fundIdentifier}/json/jsondwjz.json`
   const fetchData = (await axios.get(url)).data
   const fetchResult = fetchData.split('=')[1]
   try {
@@ -25,7 +27,7 @@ export const fetchUnitPriceByIdentifier = async (fundIdentifier) => {
 }
 
 export const fetchAccumulatedPriceByIdentifier = async (fundIdentifier) => {
-  const url = `https://fund.10jqka.com.cn/${fundIdentifier}/json/jsonljjz.json`
+  const url = `${fundDataApiHost}/${fundIdentifier}/json/jsonljjz.json`
   const fetchData = (await axios.get(url)).data
   const fetchResult = fetchData.split('=')[1]
   try {
@@ -40,7 +42,7 @@ export const fetchAccumulatedPriceByIdentifier = async (fundIdentifier) => {
 export const fetchDividendByIdentifier = async (fundIdentifier) => {
   let formattedResult = []
   try {
-    const fetchResult = (await axios.get(`https://fund.10jqka.com.cn/${fundIdentifier}/fhcf.js`)).data.split(';')[0].split('=')[1]
+    const fetchResult = (await axios.get(`${fundDataApiHost}/${fundIdentifier}/fhcf.js`)).data.split(';')[0].split('=')[1]
     formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), dividend: Number(item[1]) }))
     formattedResult = sortByDate(formattedResult)
   } catch (e) {
@@ -52,7 +54,7 @@ export const fetchDividendByIdentifier = async (fundIdentifier) => {
 export const fetchSplitByIdentifier = async (fundIdentifier) => {
   let formattedResult = []
   try {
-    const fetchResult = (await axios.get(`https://fund.10jqka.com.cn/${fundIdentifier}/fhcf.js`)).data.split(';')[1].split('=')[1]
+    const fetchResult = (await axios.get(`${fundDataApiHost}/${fundIdentifier}/fhcf.js`)).data.split(';')[1].split('=')[1]
     formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), splitRatio: Number(item[1]) }))
     formattedResult = sortByDate(formattedResult)
   } catch (e) {
@@ -64,7 +66,7 @@ export const fetchSplitByIdentifier = async (fundIdentifier) => {
 export const fetchBasicInfoByIdentifier = async (fundIdentifier) => {
   let formattedResult = null
   try {
-    const fetchResult = (await axios.get(`https://fund.10jqka.com.cn/data/client/myfund/${fundIdentifier}`)).data.data[0]
+    const fetchResult = (await axios.get(`${fundDataApiHost}/data/client/myfund/${fundIdentifier}`)).data.data[0]
     formattedResult = {
       identifier: fetchResult.code,
       name: fetchResult.name,
