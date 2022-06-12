@@ -11,7 +11,8 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.tz.setDefault('Asia/Shanghai')
 
-const fundDataApiHost = 'http://fund-data.netbeen.top'
+// const fundDataApiHost = 'http://fund-data.netbeen.top'
+const fundDataApiHost = 'https://fund.10jqka.com.cn'
 
 export const fetchUnitPriceByIdentifier = async (fundIdentifier) => {
   const url = `${fundDataApiHost}/${fundIdentifier}/json/jsondwjz.json`
