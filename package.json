@@ -43,11 +43,11 @@
     "url": "https://github.com/netbeen/fund-tools"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.6",
-    "@babel/core": "^7.17.9",
-    "@babel/node": "^7.16.8",
-    "@babel/plugin-transform-runtime": "^7.17.0",
-    "@babel/preset-env": "^7.16.11",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.2",
+    "@babel/node": "^7.17.10",
+    "@babel/plugin-transform-runtime": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^22.4.3",
     "babel-plugin-external-helpers": "^6.22.0",
@@ -63,7 +63,7 @@
     "ncp": "^2.0.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.16.1",
-    "rollup": "^2.70.1",
+    "rollup": "^2.75.6",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
@@ -71,9 +71,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
-    "@babel/runtime": "^7.17.9",
+    "@babel/runtime": "^7.18.3",
     "axios": "^0.26.1",
-    "dayjs": "^1.11.1",
+    "dayjs": "^1.11.3",
     "financial": "^0.1.3"
   }
 }
