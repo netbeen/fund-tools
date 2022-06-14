@@ -13,10 +13,7 @@ async function build(option) {
 
 (async () => {
   try {
-    build(configFactory({
-      input: './src/index.js',
-      fileName: './index.min.js'
-    }))
+    build(configFactory())
     await promisify(ncp)('./types/', './')
   } catch (e) {
     console.error(e) // eslint-disable-line no-console

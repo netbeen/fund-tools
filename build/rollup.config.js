@@ -3,30 +3,27 @@ const babel = require('rollup-plugin-babel')
 const commonjs = require('rollup-plugin-commonjs')
 const { terser } = require('rollup-plugin-terser')
 
-module.exports = (config) => {
-  const { input, fileName, name } = config
-  return {
-    input: {
-      input,
-      external: ['dayjs', 'axios'],
-      plugins: [
-        resolve({}),
-        babel({
-          exclude: 'node_modules/**'
-        }),
-        terser(),
-        commonjs()
-      ]
+module.exports = () => ({
+  input: {
+    input: './src/index.js',
+    external: ['dayjs', 'axios'],
+    plugins: [
+      resolve({}),
+      babel({
+        exclude: 'node_modules/**'
+      }),
+      terser(),
+      commonjs()
+    ]
+  },
+  output: {
+    file: './index.min.js',
+    format: 'umd',
+    name: 'fundTools',
+    globals: {
+      dayjs: 'dayjs',
+      axios: 'axios'
     },
-    output: {
-      file: fileName,
-      format: 'umd',
-      name: name || 'dayjs',
-      globals: {
-        dayjs: 'dayjs',
-        axios: 'axios'
-      },
-      compact: true
-    }
+    compact: true
   }
-}
+})
