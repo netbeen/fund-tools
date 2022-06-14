@@ -1,6 +1,6 @@
 {
   "name": "fund-tools",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "An NPM lib supports the Chinese fund's data fetching, rate of return calculation, and especially annualized rate of return calculation, which is available to Node.js runtime and browsers.",
   "main": "index.min.js",
   "types": "index.d.ts",
