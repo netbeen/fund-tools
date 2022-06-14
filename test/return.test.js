@@ -1,4 +1,6 @@
-import { fetchDividendByIdentifier, fetchSplitByIdentifier, calcReturn, fetchUnitPriceByIdentifier } from '../src'
+import {
+  fetchDividendByIdentifier, fetchSplitByIdentifier, calcReturn, fetchUnitPriceByIdentifier
+} from '../src'
 import {
   internalDayjs,
   sliceBetween
@@ -21,7 +23,7 @@ test('Real data on 519671 until 2021-11-11 测试 买入', async () => {
     sliceBetween(unitResult, HISTORY_START_DATE, internalDayjs('2021-11-11')),
     dividendsResult,
     splitResult,
-    getMockOperationsOn519671One(),
+    getMockOperationsOn519671One()
   )
   expect(result.unitPrice).toBe(1.597)
   expect(result.unitCost).toBe(1.6110785712273878)
@@ -41,7 +43,7 @@ test('Real data on 519671 until 2019-09-30 测试 买入/卖出/分红', async (
     unitResult,
     dividendsResult,
     splitResult,
-    getMockOperationsOn519671Two(),
+    getMockOperationsOn519671Two()
   )
   expect(result.unitPrice).toBe(1.417)
   expect(result.volume).toBe(0)
@@ -63,7 +65,7 @@ test('Real data on 512010 until 2021-11-12 测试 买入/卖出/拆分', async (
     sliceBetween(unitResult, HISTORY_START_DATE, internalDayjs('2021-11-12')),
     dividendsResult,
     splitResult,
-    getMockOperationsOn512010(),
+    getMockOperationsOn512010()
   )
   expect(result.unitPrice).toBe(0.6416)
   expect(result.unitCost).toBe(0.8303831632653061)
@@ -87,7 +89,7 @@ test('Real data on 202002 until 2021-11-12 测试 买入/卖出/分红/拆分', 
     sliceBetween(unitResult, HISTORY_START_DATE, internalDayjs('2021-11-12')),
     dividendsResult,
     splitResult,
-    getMockOperationsOn202002(),
+    getMockOperationsOn202002()
   )
   expect(result.unitPrice).toBe(0.615)
   expect(result.unitCost).toBe(0.7904529095375764)

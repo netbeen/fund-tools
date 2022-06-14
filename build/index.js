@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 const rollup = require('rollup')
-const configFactory = require('./rollup.config')
 const util = require('util')
 const { ncp } = require('ncp')
+const configFactory = require('./rollup.config')
 
 const { promisify } = util
 

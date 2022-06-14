@@ -1,4 +1,7 @@
-import { fetchBasicInfoByIdentifier, fetchUnitPriceByIdentifier, fetchAccumulatedPriceByIdentifier, fetchDividendByIdentifier, fetchSplitByIdentifier } from '../src'
+import {
+  fetchBasicInfoByIdentifier, fetchUnitPriceByIdentifier,
+  fetchAccumulatedPriceByIdentifier, fetchDividendByIdentifier, fetchSplitByIdentifier
+} from '../src'
 
 test('Fetch some example price data', async () => {
   const [unitResult, accumulatedResult, dividendsResult, splitResult] = await Promise.all([

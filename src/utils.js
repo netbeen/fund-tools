@@ -3,19 +3,19 @@ import dayjs from 'dayjs'
 
 export const internalDayjs = dayjs
 
-export const sortByDate = inputArray => inputArray.sort((a, b) => (a.date.valueOf() - b.date.valueOf()))
+export const sortByDate = (inputArray) => inputArray.sort((a, b) => (a.date.valueOf() - b.date.valueOf()))
 
-export const sliceBetween = (inputArray, startDate, endDate) => inputArray.filter(item => (
+export const sliceBetween = (inputArray, startDate, endDate) => inputArray.filter((item) => (
   item.date >= startDate && item.date <= endDate
 ))
 
-export const lastOfArray = inputArray => (inputArray[inputArray.length - 1])
+export const lastOfArray = (inputArray) => (inputArray[inputArray.length - 1])
 
-export const findByDateFromArray = (inputArray, targetDate) => (inputArray.find(item => item.date.isSame(targetDate)))
+export const findByDateFromArray = (inputArray, targetDate) => (inputArray.find((item) => item.date.isSame(targetDate)))
 
 export const
   findClosestSmallerItemByDateFromArray = (inputArray, targetDate) => (
-    inputArray.reverse().find(item => item.date <= targetDate)
+    inputArray.reverse().find((item) => item.date <= targetDate)
   )
 
 export const weightedSum = (inputArray) => {

@@ -19,7 +19,7 @@ const calcAnnualizedRateOfReturn = (lastDayOfTransactionSet, currentVolume, unit
   const irrData = []
   for (let i = 0; i < (duration + 1); i += 1) {
     const currentDate = startDate.add(i, 'day')
-    const targetOperation = operations.find(operation => operation.date.isSame(currentDate))
+    const targetOperation = operations.find((operation) => operation.date.isSame(currentDate))
 
     if (targetOperation) {
       const currentUnitPriceObject = findByDateFromArray(unitPrices, currentDate)
@@ -67,10 +67,10 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
 
   // 统计出所有 买卖、分红、拆分 会影响成本和持仓数量的时间点，并按照递增排序
   const operationOrDividendOrSplitDate = Array.from(new Set([
-    ...(validDividends.map(item => item.date)),
-    ...(validSplits.map(item => item.date)),
-    ...(operations.map(item => item.date))
-  ])).sort((a, b) => (a - b)).map(item => dayjs(item))
+    ...(validDividends.map((item) => item.date)),
+    ...(validSplits.map((item) => item.date)),
+    ...(operations.map((item) => item.date))
+  ])).sort((a, b) => (a - b)).map((item) => dayjs(item))
 
   // 持仓储量统计值
   let currentVolume = 0
@@ -145,7 +145,7 @@ export const calcReturn = (unitPrices, dividends, splits, operations) => {
     lastDayOfTransactionSet,
     currentVolume,
     validUnitPrices,
-    operations,
+    operations
   )
 
   return {

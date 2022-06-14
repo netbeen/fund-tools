@@ -19,7 +19,7 @@ export const fetchUnitPriceByIdentifier = async (fundIdentifier) => {
   const fetchData = (await axios.get(url)).data
   const fetchResult = fetchData.split('=')[1]
   try {
-    let formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), price: Number(item[1]) }))
+    let formattedResult = JSON.parse(fetchResult).map((item) => ({ date: dayjs.tz(item[0]).hour(0), price: Number(item[1]) }))
     formattedResult = sortByDate(formattedResult)
     return formattedResult
   } catch (e) {
@@ -32,7 +32,7 @@ export const fetchAccumulatedPriceByIdentifier = async (fundIdentifier) => {
   const fetchData = (await axios.get(url)).data
   const fetchResult = fetchData.split('=')[1]
   try {
-    let formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), price: Number(item[1]) }))
+    let formattedResult = JSON.parse(fetchResult).map((item) => ({ date: dayjs.tz(item[0]).hour(0), price: Number(item[1]) }))
     formattedResult = sortByDate(formattedResult)
     return formattedResult
   } catch (e) {
@@ -44,7 +44,7 @@ export const fetchDividendByIdentifier = async (fundIdentifier) => {
   let formattedResult = []
   try {
     const fetchResult = (await axios.get(`${fundDataApiHost}/${fundIdentifier}/fhcf.js`)).data.split(';')[0].split('=')[1]
-    formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), dividend: Number(item[1]) }))
+    formattedResult = JSON.parse(fetchResult).map((item) => ({ date: dayjs.tz(item[0]).hour(0), dividend: Number(item[1]) }))
     formattedResult = sortByDate(formattedResult)
   } catch (e) {
     return []
@@ -56,7 +56,7 @@ export const fetchSplitByIdentifier = async (fundIdentifier) => {
   let formattedResult = []
   try {
     const fetchResult = (await axios.get(`${fundDataApiHost}/${fundIdentifier}/fhcf.js`)).data.split(';')[1].split('=')[1]
-    formattedResult = JSON.parse(fetchResult).map(item => ({ date: dayjs.tz(item[0]).hour(0), splitRatio: Number(item[1]) }))
+    formattedResult = JSON.parse(fetchResult).map((item) => ({ date: dayjs.tz(item[0]).hour(0), splitRatio: Number(item[1]) }))
     formattedResult = sortByDate(formattedResult)
   } catch (e) {
     return []
