@@ -1,6 +1,6 @@
 {
   "name": "fund-tools",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "jsnext:source": "./src/index.ts",
   "types": "./dist/types/index.d.ts",
   "main": "./dist/lib/index.js",
@@ -20,7 +20,8 @@
     "gen-release-note": "modern gen-release-note",
     "release": "modern release",
     "new": "modern new",
-    "upgrade": "modern upgrade"
+    "upgrade": "modern upgrade",
+    "allInOne": "npm run test && npm run build && npm publish"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
