@@ -97,7 +97,7 @@ describe('calcVolume () test', () => {
         },
       ]);
     }).toThrow(
-      'Error: currentVolume < 0! invalid transaction list, operationEvent=',
+      'Error: currentVolume < 0! invalid transaction list, currentVolume=-2000, operationEvent=',
     );
   });
 });

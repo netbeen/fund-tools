@@ -342,7 +342,7 @@ export const calcVolume = (
           : -operationEvent.volume;
       if (currentVolume < 0) {
         throw new Error(
-          `Error: currentVolume < 0! invalid transaction list, currentVolume=${currentVolume},operationEvent=${JSON.stringify(
+          `Error: currentVolume < 0! invalid transaction list, currentVolume=${currentVolume}, operationEvent=${JSON.stringify(
             operationEvent,
           )}`,
         );
