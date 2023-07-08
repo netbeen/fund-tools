@@ -74,6 +74,65 @@ const calcAnnualizedRateOfReturn = (
   return irr(irrData, 0, 0.00001, 1000) * 365;
 };
 
+export interface CalcReturnData {
+  /**
+   * 最新单位净值
+   */
+  unitPrice: number;
+  /**
+   * 最新单位成本
+   */
+  unitCost: number;
+  /**
+   * 持仓份额
+   */
+  volume: number;
+  /**
+   * 总显性手续费
+   */
+  totalCommission: number;
+  /**
+   * 总分红
+   */
+  totalDividend: number;
+  /**
+   * 持仓总收益
+   */
+  positionReturn: number;
+  /**
+   * 持仓总成本
+   */
+  positionCost: number;
+  /**
+   * 持仓总市值
+   */
+  positionValue: number;
+  /**
+   * 持仓收益率
+   */
+  positionRateOfReturn: number;
+  /**
+   * 落袋收益
+   */
+  exitReturn: number;
+  /**
+   * 总收益 = 持仓总收益 + 落袋收益
+   */
+  totalReturn: number;
+  /**
+   * 总成本
+   */
+  totalCost: number;
+  /**
+   * 总收益率
+   */
+  totalRateOfReturn: number;
+  /**
+   * 总年化收益率 (IRR)
+   */
+  totalAnnualizedRateOfReturn: number;
+}
+
 /**
  * 计算收益：包括 当前净值、当前成本、收益额、收益率、年化收益率
  * 计算范围：operations 的第一天 ~ unitPrices 的最后一天
@@ -89,14 +148,6 @@ export const calcReturn = (
   splits: DateSplitRatio[],
   operations: Operation[],
 ) => {
-  if (
-    !Array.isArray(unitPrices) ||
-    !Array.isArray(operations) ||
-    !Array.isArray(dividends) ||
-    !Array.isArray(splits)
-  ) {
-    throw new Error('Params Error');
-  }
   if (operations.length === 0) {
     throw new Error('Param operations received []');
   }
@@ -119,9 +170,7 @@ export const calcReturn = (
       ...validSplits.map(item => item.date),
       ...operations.map(item => item.date),
     ]),
-  )
-    .sort((a, b) => a.valueOf() - b.valueOf())
-    .map(item => dayjs(item));
+  ).sort((a, b) => a.valueOf() - b.valueOf());
 
   // 持仓储量统计值
   let currentVolume = 0;
@@ -165,12 +214,17 @@ export const calcReturn = (
       }
       const unitPriceThatDay = unitPriceObj.price;
       if (operationEvent.direction === OPERATION_DIRECTION_BUY) {
+        // 本次买入的单位净值（包含手续费）
         const thisEventUnitCost =
           unitPriceThatDay + operationEvent.commission / operationEvent.volume;
+
+        // 本次买入后的单位成本
         currentUnitCost = weightedSum([
           { value: currentUnitCost, weight: currentVolume },
           { value: thisEventUnitCost, weight: operationEvent.volume },
         ]);
+
+        // 累计总成本
         currentCost +=
           unitPriceThatDay * operationEvent.volume + operationEvent.commission;
       } else {
@@ -197,6 +251,15 @@ export const calcReturn = (
       `Try to get last unitPrice failed, got ${lastValidUnitPriceObj}`,
     );
   }
+
+  // 验算
+  const calcVolumeResult = calcVolume(splits, operations);
+  if (calcVolumeResult !== currentVolume) {
+    throw new Error(
+      `currentVolume check failed. currentVolume=${currentVolume} calcVolumeResult=${calcVolumeResult}`,
+    );
+  }
+
   // 持仓盈利
   const positionReturn = lastDayOfTransactionSet
     ? 0
@@ -230,7 +293,7 @@ export const calcReturn = (
     totalCost: currentCost,
     totalRateOfReturn: totalReturn / currentCost,
     totalAnnualizedRateOfReturn,
-  };
+  } as CalcReturnData;
 };
 
 /**
@@ -277,6 +340,13 @@ export const calcVolume = (
         operationEvent.direction === OPERATION_DIRECTION_BUY
           ? operationEvent.volume
           : -operationEvent.volume;
+      if (currentVolume < 0) {
+        throw new Error(
+          `Error: currentVolume < 0! invalid transaction list, operationEvent=${JSON.stringify(
+            operationEvent,
+          )}`,
+        );
+      }
     }
   });
 

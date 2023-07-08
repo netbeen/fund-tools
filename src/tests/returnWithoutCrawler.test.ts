@@ -88,13 +88,16 @@ describe('calcVolume () test', () => {
 
   test('Edge: Sell twice (duplicate operations)', () => {
     const lastOperation = mockOperations1[mockOperations1.length - 1];
-    const volume = calcVolume([] as DateSplitRatio[], [
-      ...mockOperations1,
-      {
-        ...lastOperation,
-        date: lastOperation.date.add(1, 'day'),
-      },
-    ]);
-    expect(volume).toBe(-2000);
+    expect(() => {
+      calcVolume([] as DateSplitRatio[], [
+        ...mockOperations1,
+        {
+          ...lastOperation,
+          date: lastOperation.date.add(1, 'day'),
+        },
+      ]);
+    }).toThrow(
+      'Error: currentVolume < 0! invalid transaction list, operationEvent=',
+    );
   });
 });
