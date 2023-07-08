@@ -232,3 +232,53 @@ export const calcReturn = (
     totalAnnualizedRateOfReturn,
   };
 };
+
+/**
+ * 计算最新份额
+ * @param splits
+ * @param operations
+ */
+export const calcVolume = (
+  splits: DateSplitRatio[],
+  operations: Operation[],
+) => {
+  if (operations.length === 0) {
+    throw new Error(
+      'Param operations received [], at least one operation is required.',
+    );
+  }
+  // 只计算从开仓日期以后的拆分动作（历史拆分不影响份额）
+  const validSplits = sliceBetween(splits, operations[0].date, dayjs());
+
+  // 统计出所有 买卖、拆分 会影响持仓数量的时间点，并按照递增排序
+  const operationOrSplitDate = Array.from(
+    new Set([
+      ...validSplits.map(item => item.date),
+      ...operations.map(item => item.date),
+    ]),
+  ).sort((a, b) => a.valueOf() - b.valueOf());
+
+  // 持仓储量统计值
+  let currentVolume = 0;
+  // 单位成本统计值: 单位成本 = 单位净值 + 单位手续费
+
+  operationOrSplitDate.forEach(eventDate => {
+    // 拆分: 增加持仓数量，减少单位成本
+    const splitEvent = findByDateFromArray(validSplits, eventDate);
+    if (splitEvent) {
+      currentVolume *= splitEvent.splitRatio;
+    }
+    // 买卖: 增加总手续费
+    // 买: 增加持仓数量，改变单位成本
+    // 卖: 减少持仓数量，改变离场盈利
+    const operationEvent = findByDateFromArray(operations, eventDate);
+    if (operationEvent) {
+      currentVolume +=
+        operationEvent.direction === OPERATION_DIRECTION_BUY
+          ? operationEvent.volume
+          : -operationEvent.volume;
+    }
+  });
+
+  return currentVolume;
+};

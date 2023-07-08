@@ -1,4 +1,4 @@
-import { calcReturn } from './return';
+import { calcReturn, calcVolume } from './return';
 import {
   fetchBasicInfoByIdentifier,
   fetchUnitPriceByIdentifier,
@@ -14,6 +14,7 @@ import { OPERATION_DIRECTION_BUY, OPERATION_DIRECTION_SELL } from './constants';
 import { sliceBetween, lastOfArray } from './utils';
 
 export {
+  calcVolume,
   calcReturn,
   fetchUnitPriceByIdentifier,
   fetchSplitByIdentifier,
