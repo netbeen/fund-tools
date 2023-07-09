@@ -1,5 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { irr } from 'financial';
+import almostEqual from 'almost-equal';
 import {
   findByDateFromArray,
   lastOfArray,
@@ -340,7 +341,15 @@ export const calcVolume = (
       }
 
       // data validation check
-      if (currentVolume < 0) {
+      if (
+        currentVolume < 0 &&
+        !almostEqual(
+          currentVolume,
+          0,
+          almostEqual.FLT_EPSILON,
+          almostEqual.FLT_EPSILON,
+        )
+      ) {
         throw new Error(
           `Error: currentVolume < 0! invalid transaction list, currentVolume=${currentVolume}, event=${JSON.stringify(
             event,
