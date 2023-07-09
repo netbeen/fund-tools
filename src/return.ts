@@ -9,7 +9,7 @@ import {
   findClosestSmallerItemByDateFromArray,
 } from './utils';
 import { OPERATION_DIRECTION_BUY } from './constants';
-import { DateDividend, DatePrice, DateSplitRatio } from '@/crawler';
+import { DateDividend, DatePrice, DateSplitRatio } from './crawler';
 
 export interface Operation {
   date: Dayjs;
