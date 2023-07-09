@@ -1,6 +1,6 @@
 {
   "name": "fund-tools",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "jsnext:source": "./src/index.ts",
   "types": "./dist/types/index.d.ts",
   "main": "./dist/lib/index.js",
