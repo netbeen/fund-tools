@@ -296,6 +296,12 @@ export const calcReturn = (
   } as CalcReturnData;
 };
 
+function isDateSplitRatio(
+  event: Operation | DateSplitRatio,
+): event is DateSplitRatio {
+  return (event as DateSplitRatio).splitRatio !== undefined;
+}
+
 /**
  * 计算最新份额
  * @param splits
@@ -313,42 +319,60 @@ export const calcVolume = (
   // 只计算从开仓日期以后的拆分动作（历史拆分不影响份额）
   const validSplits = sliceBetween(splits, operations[0].date, dayjs());
 
-  // 统计出所有 买卖、拆分 会影响持仓数量的时间点，并按照递增排序
-  const operationOrSplitDate = Array.from(
-    new Set([
-      ...validSplits.map(item => item.date),
-      ...operations.map(item => item.date),
-    ]),
-  ).sort((a, b) => a.valueOf() - b.valueOf());
-
   // 持仓储量统计值
   let currentVolume = 0;
   // 单位成本统计值: 单位成本 = 单位净值 + 单位手续费
 
-  operationOrSplitDate.forEach(eventDate => {
-    // 拆分: 增加持仓数量，减少单位成本
-    const splitEvent = findByDateFromArray(validSplits, eventDate);
-    if (splitEvent) {
-      currentVolume *= splitEvent.splitRatio;
-    }
-    // 买卖: 增加总手续费
-    // 买: 增加持仓数量，改变单位成本
-    // 卖: 减少持仓数量，改变离场盈利
-    const operationEvent = findByDateFromArray(operations, eventDate);
-    if (operationEvent) {
-      currentVolume +=
-        operationEvent.direction === OPERATION_DIRECTION_BUY
-          ? operationEvent.volume
-          : -operationEvent.volume;
+  [...validSplits, ...operations]
+    .sort((a, b) => a.date.valueOf() - b.date.valueOf())
+    .forEach(event => {
+      if (isDateSplitRatio(event)) {
+        // 拆分: 增加持仓数量，减少单位成本
+        currentVolume *= event.splitRatio;
+      } else {
+        // 买卖: 增加总手续费
+        // 买: 增加持仓数量，改变单位成本
+        // 卖: 减少持仓数量，改变离场盈利
+        currentVolume +=
+          event.direction === OPERATION_DIRECTION_BUY
+            ? event.volume
+            : -event.volume;
+      }
+
+      // data validation check
       if (currentVolume < 0) {
         throw new Error(
-          `Error: currentVolume < 0! invalid transaction list, currentVolume=${currentVolume}, operationEvent=${JSON.stringify(
-            operationEvent,
+          `Error: currentVolume < 0! invalid transaction list, currentVolume=${currentVolume}, event=${JSON.stringify(
+            event,
           )}`,
         );
       }
-    }
-  });
+    });
+
+  // operationOrSplitDate.forEach(eventDate => {
+  //   // 拆分: 增加持仓数量，减少单位成本
+  //   const splitEvent = findByDateFromArray(validSplits, eventDate);
+  //   if (splitEvent) {
+  //     currentVolume *= splitEvent.splitRatio;
+  //   }
+  //   // 买卖: 增加总手续费
+  //   // 买: 增加持仓数量，改变单位成本
+  //   // 卖: 减少持仓数量，改变离场盈利
+  //   const operationEvent = findByDateFromArray(operations, eventDate);
+  //   if (operationEvent) {
+  //     currentVolume +=
+  //       operationEvent.direction === OPERATION_DIRECTION_BUY
+  //         ? operationEvent.volume
+  //         : -operationEvent.volume;
+  //     if (currentVolume < 0) {
+  //       throw new Error(
+  //         `Error: currentVolume < 0! invalid transaction list, currentVolume=${currentVolume}, operationEvent=${JSON.stringify(
+  //           operationEvent,
+  //         )}`,
+  //       );
+  //     }
+  //   }
+  // });
 
   return currentVolume;
 };

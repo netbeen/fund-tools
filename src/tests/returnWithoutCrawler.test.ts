@@ -3,7 +3,10 @@ import {
   getMockOperationsOnAnnualizedRateOfReturnOne,
   getMockUnitPriceOnAnnualizedRateOfReturnOne,
 } from '../testUtils';
-import { mockOperations1 } from './mockOperations';
+import {
+  mockOperations1,
+  mockOperationsWithADayDoBothBuyAndSell,
+} from './mockOperations';
 
 test('Mock Data 测试 买入/年化收益率', async () => {
   const result = calcReturn(
@@ -86,6 +89,27 @@ describe('calcVolume () test', () => {
     expect(volume).toBe(500);
   });
 
+  test('Operations with a day do both buy and sell', () => {
+    const volume = calcVolume(
+      [] as DateSplitRatio[],
+      mockOperationsWithADayDoBothBuyAndSell,
+    );
+    expect(volume).toBe(600);
+  });
+
+  test('Operations with a day do both buy and sell + split at that day', () => {
+    const volume = calcVolume(
+      [
+        {
+          date: mockOperationsWithADayDoBothBuyAndSell[2].date,
+          splitRatio: 1.5,
+        },
+      ] as DateSplitRatio[],
+      mockOperationsWithADayDoBothBuyAndSell,
+    );
+    expect(volume).toBe(1600);
+  });
+
   test('Edge: Sell twice (duplicate operations)', () => {
     const lastOperation = mockOperations1[mockOperations1.length - 1];
     expect(() => {
@@ -97,7 +121,7 @@ describe('calcVolume () test', () => {
         },
       ]);
     }).toThrow(
-      'Error: currentVolume < 0! invalid transaction list, currentVolume=-2000, operationEvent=',
+      'Error: currentVolume < 0! invalid transaction list, currentVolume=-2000, event=',
     );
   });
 });
